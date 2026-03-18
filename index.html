@@ -11,22 +11,19 @@
     <nav class="pill-nav">
         <a href="index.html" class="is-current-page">TOP</a>
         <a href="environment.html">ENV</a>
-        <a href="vfx.html">VFX</a>
-        <a href="animation.html">ANIM</a>
-        <a href="game.html">GAME</a>
+        <a href="character.html">CHARA</a> <a href="vfx_anim.html">VFX & ANIM</a> <a href="game.html">GAME</a>
         <a href="props.html">PROPS</a>
     </nav>
 
     <nav class="timeline-nav">
         <a href="#hero" class="nav-item"><span>TOP</span></a>
         <a href="#showcase-env" class="nav-item"><span>ENVIRONMENT</span></a>
-        <a href="#showcase-vfx" class="nav-item"><span>VFX & COMP</span></a>
-        <a href="#showcase-anim" class="nav-item"><span>ANIMATION</span></a>
-        <a href="#showcase-game" class="nav-item"><span>GAME DEV</span></a>
+        <a href="#showcase-character" class="nav-item"><span>CHARACTER</span></a> <a href="#showcase-vfx-anim" class="nav-item"><span>VFX & ANIMATION</span></a> <a href="#showcase-game" class="nav-item"><span>GAME DEV</span></a>
         <a href="#showcase-props" class="nav-item"><span>PROPS</span></a>
         <a href="#contact" class="nav-item"><span>CONTACT</span></a>
     </nav>
-
+	
+	
     <section id="hero">
         <video id="hero-video" class="bg-media" src="1.mp4" autoplay muted loop playsinline></video>
         <div class="content-box">
@@ -65,7 +62,31 @@
         </div>
     </section>
 
-    <section id="showcase-vfx" class="content-block scroll-reveal">
+    <section id="showcase-character" class="content-block scroll-reveal">
+        <video class="bg-media" src="chara_demo.mp4" autoplay muted loop playsinline></video>
+        
+        <div class="works-split-container">
+            <div class="split-right">
+                <div class="tech-info chara-reveal-text">
+                    <span class="category-tag category-tag-chara">Anatomy & Design</span>
+                    <h3>3D Character</h3>
+                    <p>人体構造への深い理解と、魅力的なキャラクターモデリング。リギングを前提とした美しいトポロジーと、SFやメカニカルな装甲デザインまで幅広く対応します。</p>
+                    <a href="character.html" class="view-more-btn">VIEW CHARACTERS ➔</a>
+                </div>
+            </div>
+            <div class="split-left">
+                <div class="single-image-box">
+                    <div class="char-corner cc-tl"></div>
+                    <div class="char-corner cc-tr"></div>
+                    <div class="char-corner cc-bl"></div>
+                    <div class="char-corner cc-br"></div>
+                    <img src="chara_main.png" alt="Character Modeling">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="showcase-vfx-anim" class="content-block scroll-reveal">
         <video class="bg-media" src="composite.webm" autoplay muted loop playsinline></video>
         
         <div class="viewfinder-corner vf-tl"></div>
@@ -73,43 +94,20 @@
         <div class="viewfinder-corner vf-bl"></div>
         <div class="viewfinder-corner vf-br"></div>
         <div class="center-cross"></div>
-
-        <div class="works-split-container">
-            <div class="split-right">
-                <div class="tech-info vfx-reveal-text">
-                    <span class="category-tag category-tag-vfx">VFX & Compositing</span>
-                    <h3>Visual Synthesis</h3>
-                    <p>実写と3Dの境界を融解させるコンポジットワーク。マッチムーブから高度なエフェクト挿入まで、一貫したパイプラインで映像を構築します。</p>
-                    <a href="vfx.html" class="view-more-btn">EXPLORE DATA ➔</a>
-                </div>
-            </div>
-            
-            <div class="split-left">
-                <div class="single-image-box">
-                    <img src="vfx_main.png" alt="VFX analysis">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="showcase-anim" class="content-block scroll-reveal">
-        <video class="bg-media" src="3.mp4" autoplay muted loop playsinline></video>
-        
         <div class="timecode-display">TC [ 01:00:24:15 ]</div>
 
         <div class="works-split-container">
             <div class="split-left">
                 <div class="single-image-box">
-                    <img src="Anime_demo.png" alt="3D Animation">
+                    <img src="vfx_main.png" alt="VFX and Animation">
                 </div>
             </div>
-            
             <div class="split-right">
-                <div class="tech-info anim-reveal-text">
-                    <span class="category-tag category-tag-anim">Motion & Rigging</span>
-                    <h3>3D Animation</h3>
-                    <p>キャラクターの細やかな感情表現から、メカニカルなハードサーフェス・リギングまで。キーフレームと物理演算を駆使し、生命感のある動きを創造します。</p>
-                    <a href="animation.html" class="view-more-btn">PLAY REEL ➔</a>
+                <div class="tech-info vfx-reveal-text">
+                    <span class="category-tag category-tag-vfx">Motion & Compositing</span>
+                    <h3>VFX & Animation</h3>
+                    <p>生命感のあるキャラクターアニメーションから、実写と3Dを融解させるコンポジットワークまで。動きと視覚効果を統合し、シネマティックな映像を構築します。</p>
+                    <a href="vfx_anim.html" class="view-more-btn">PLAY REEL ➔</a>
                 </div>
             </div>
         </div>

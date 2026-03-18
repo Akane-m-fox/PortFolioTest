@@ -11,7 +11,32 @@ body {
     font-family: "Helvetica Neue", Arial, sans-serif; 
     background: #050505; 
     color: #fff; 
+    position: relative;
 }
+/* 画面全体に微かな走査線（スキャンライン）を重ねる (旧トップ移植) */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        transparent,
+        transparent 1px,
+        rgba(255, 255, 255, 0.01) 1px,
+        rgba(255, 255, 255, 0.01) 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+}
+
+/* 旧ポートフォリオ背景アニメーション (移植) */
+#vanta-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -10;
+}
+
 section { 
     position: relative; 
     height: 100vh; 
@@ -19,7 +44,6 @@ section {
     justify-content: center; 
     align-items: center; 
     overflow: hidden; 
-    border-bottom: 1px solid #111; 
 }
 .bg-media { 
     position: absolute; 
@@ -40,7 +64,7 @@ section {
     font-size: clamp(1.5rem, 4vw, 3rem); 
     letter-spacing: 0.15em; 
     text-shadow: 0 4px 20px rgba(0,0,0,0.9); 
-    font-weight: 300; 
+    font-weight: 100; 
     margin: 0; 
 }
 .section-desc { 
@@ -101,23 +125,6 @@ section {
     box-shadow: 0 0 8px #fff; 
 }
 
-@media (min-width: 1025px) {
-    .pill-nav {
-        padding: 15px 30px; 
-        gap: 20px; 
-        bottom: 40px; 
-        border-radius: 50px; 
-        background: rgba(20, 20, 20, 0.7);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-    }
-    .pill-nav a {
-        font-size: 0.9rem; 
-        padding: 10px 20px; 
-        letter-spacing: 0.15em; 
-    }
-}
-
 /* ==========================================
    3. UI-B: Local Navigation (Timeline)
 ========================================== */
@@ -171,51 +178,7 @@ section {
 }
 
 /* ==========================================
-   4. Responsive (Mobile)
-========================================== */
-@media (max-width: 1024px) {
-    .pill-nav { 
-        width: 90%; 
-        max-width: 400px; 
-        padding: 12px 10px; 
-        justify-content: space-around; 
-        gap: 0; 
-        bottom: 20px; 
-    }
-    .pill-nav a { 
-        font-size: 0.6rem; 
-        padding: 5px; 
-        letter-spacing: 0.05em; 
-    }
-    .timeline-nav { 
-        right: 15px; 
-        padding-right: 15px; 
-    }
-    .timeline-nav a span { 
-        display: none; 
-    }
-    .timeline-nav a { 
-        width: 20px; 
-    }
-    .timeline-nav a::after { 
-        right: -19px; 
-    }
-    .works-split-container {
-        flex-direction: column !important; 
-        gap: 40px;
-        padding-bottom: 80px; 
-    }
-    .split-left, .split-right {
-        width: 100% !important;
-    }
-    .tech-info {
-        text-align: left;
-        padding: 0 10px;
-    }
-}
-
-/* ==========================================
-   5. Layout & Typography
+   4. Layout & Typography
 ========================================== */
 .content-block {
     padding: 120px 5%; 
@@ -230,7 +193,7 @@ section {
 }
 .tech-info h3 {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: 200;
+    font-weight: 100;
     line-height: 1.1;
     margin: 15px 0 25px 0;
     border-left: 1px solid #fff;
@@ -290,106 +253,7 @@ section {
     height: 1px;
     background: #050505; 
 }
-
-/* ==========================================
-   6. HERO Section
-========================================== */
-#hero .section-title {
-    font-size: clamp(3rem, 10vw, 8rem); 
-    font-weight: 100; 
-    letter-spacing: 0.5em; 
-    text-indent: 0.5em; 
-    text-transform: uppercase;
-    background: linear-gradient(to bottom, #fff 0%, #666 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    opacity: 0;
-    filter: blur(10px);
-    transform: scale(1.1);
-    animation: heroReveal 4.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-}
-@keyframes heroReveal {
-    0% { opacity: 0; filter: blur(20px); letter-spacing: 0.2em; transform: scale(1.1); }
-    100% { opacity: 1; filter: blur(0); letter-spacing: 0.5em; transform: scale(1); }
-}
-#hero .section-desc {
-    font-size: 0.75rem;
-    letter-spacing: 0.8em;
-    text-indent: 0.8em;
-    margin-top: 30px;
-    opacity: 0.6;
-    font-weight: 300;
-}
-
-/* ==========================================
-   7. Reveal Animations (Common)
-========================================== */
-.reveal-text-wrap {
-    overflow: hidden;
-    position: relative;
-    padding-left: 20px; 
-}
-.reveal-line {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 0; 
-    background: #fff;
-    transition: height 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-.reveal-content {
-    transform: translateX(-20px);
-    opacity: 0;
-    transition: all 1.0s cubic-bezier(0.2, 1, 0.3, 1);
-    transition-delay: 0.8s; 
-}
-.is-visible .reveal-line {
-    height: 100%;
-}
-.is-visible .reveal-content {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-/* ==========================================
-   8. ENV Section
-========================================== */
-#showcase-env {
-    position: relative;
-    background-color: transparent;
-}
-#showcase-env .bg-media {
-    z-index: -2 !important;
-    opacity: 0.4;
-}
-#showcase-env::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 80px 80px;
-    z-index: -1;
-    pointer-events: none;
-}
-#showcase-env .works-split-container {
-    justify-content: flex-start !important;
-    margin-left: 8% !important;
-    max-width: 90%;
-    gap: 60px;
-}
-#showcase-env .split-left {
-    width: 50% !important;
-    flex-shrink: 0;
-}
-#showcase-env .split-right {
-    width: 35% !important;
-    text-align: left;
-}
-#showcase-env .single-image-box {
+.single-image-box {
     position: relative;
     z-index: 2;
     background: #050505;
@@ -398,387 +262,482 @@ section {
     line-height: 0; 
     overflow: hidden;
 }
-#showcase-env .single-image-box img {
-    opacity: 1 !important; 
+.single-image-box img {
     display: block;
     width: 100%;
 }
-.drawing-corner {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 1px solid rgba(255,255,255,0.2);
-    z-index: 1;
-}
-.top-left { top: 40px; left: 40px; border-right: none; border-bottom: none; }
-.bottom-right { bottom: 40px; right: 40px; border-left: none; border-top: none; }
 
-/* =========================================
-   9. VFX & COMPOSITING Section
-========================================= */
-#showcase-vfx {
-    background-color: transparent !important;
-    position: relative;
-}
-#showcase-vfx .bg-media {
-    z-index: -2 !important;
-    opacity: 0.6;
-}
-#showcase-vfx::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.6) 2px,
-        rgba(0, 0, 0, 0.6) 4px
-    );
-    z-index: -1;
-    pointer-events: none;
-}
-#showcase-vfx .works-split-container {
-    justify-content: flex-end !important;
-    margin-right: 5% !important;
-    margin-left: auto;
-    max-width: 90%;
-    gap: 60px;
-}
-#showcase-vfx .split-right {
-    width: 35% !important;
-    text-align: right;
-}
-#showcase-vfx .split-left {
-    width: 55% !important;
-    flex-shrink: 0;
-    z-index: 2;
-}
-#showcase-vfx .single-image-box {
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
-    line-height: 0;
-    overflow: hidden;
-}
-#showcase-vfx .single-image-box img {
-    width: 100%;
-    display: block;
-    opacity: 1 !important;
-}
-.vfx-reveal-text {
+/* ==========================================
+   5. Reveal Animations (Common)
+========================================== */
+.scroll-reveal {
     opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    filter: blur(5px);
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
 }
-.is-visible .vfx-reveal-text {
+.scroll-reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
 }
-.is-visible .category-tag-vfx::before {
-    content: '';
-    display: inline-block;
-    width: 8px; 
-    height: 8px;
-    background: #ff0000;
-    border-radius: 50%;
-    margin-right: 8px;
-    vertical-align: middle; 
-    position: relative;
-    top: -1px;
-    animation: blink 1.2s infinite;
-    box-shadow: 0 0 8px rgba(255,0,0,0.8);
-}
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-.viewfinder-corner {
-    position: absolute;
-    width: 30px; height: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    z-index: 0;
-}
-.vf-tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
-.vf-tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
-.vf-bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
-.vf-br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
 
-.center-cross {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 20px; height: 20px; opacity: 0.2; z-index: 0;
+/* 自動スライドショー用スタイル（完全版） */
+.auto-slideshow {
+    display: grid !important;
 }
-.center-cross::before, .center-cross::after {
-    content: ''; position: absolute; background: #fff;
+
+section .single-image-box.auto-slideshow img {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0 !important; /* 基本は透明にする */
+    z-index: 1;
+    /* 2.5秒かけて超ゆっくりクロスフェードさせる */
+    transition: opacity 2.5s ease-in-out !important; 
 }
-.center-cross::before { top: 50%; left: 0; width: 100%; height: 1px; }
-.center-cross::after { left: 50%; top: 0; width: 1px; height: 100%; }
+
+/* アクティブな画像だけ不透明にする */
+section .single-image-box.auto-slideshow img.is-active {
+    opacity: 1 !important;
+    z-index: 2;
+}
+
+/* NPR/Live2Dの画像内文字タグ */
+.category-tag-over {
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px; 
+    font-family: monospace; 
+    font-size: 0.8rem; 
+    background: #000; 
+    padding: 5px 10px;
+    z-index: 10;
+    color: #fff;
+    letter-spacing: 0.1em;
+}
 
 /* =========================================
-   10. ANIMATION Section
+   6. HERO Section (移植 & 強化)
 ========================================= */
-#showcase-anim {
-    background-color: transparent !important;
+.page-header-with-video {
     position: relative;
+    padding: 180px 5% 80px;
+    text-align: center;
+    overflow: hidden;
+    height: 100vh;
 }
-#showcase-anim .bg-media {
+
+/* 動画の不透明度を調整 */
+.page-header-with-video .bg-media {
     z-index: -2 !important;
-    opacity: 0.5;
+    opacity: 0.4; 
+    
 }
-#showcase-anim::before {
-    content: '';
+
+/* 動画の下側を自然に溶け込ませる影 (統合) */
+.page-header-with-video .header-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-image: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 100px,
-        rgba(255, 255, 255, 0.05) 100px,
-        rgba(255, 255, 255, 0.05) 101px
-    );
+    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%);
     z-index: -1;
     pointer-events: none;
 }
-#showcase-anim .works-split-container {
-    justify-content: flex-start !important;
-    margin-left: 5% !important;
-    margin-right: auto;
-    max-width: 90%;
-    gap: 60px;
+
+/* フィルムノイズ (旧トップ移植) */
+.page-header-with-video::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8xMy8xOdI4u48AAAAfdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAB50RVh0VGl0bGUAQmFja2dyb3VuZCBOb2lzZSBUZXh0dXJlve0p6AAAAD5JREFUeF7t1AENAAAIwzBy+reYw5WEYwU6u4mJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYlt8wE9xwU8p5C6+AAAAABJRU5ErkJggg==');
+    opacity: 0.03;
+    z-index: -1;
+    pointer-events: none;
 }
-#showcase-anim .split-left {
-    width: 55% !important;
-    flex-shrink: 0;
-    z-index: 2;
+
+/* タイトル見出し (グロー効果移植) */
+.page-header-with-video .section-title {
+    font-size: clamp(3rem, 6vw, 5rem); 
+    letter-spacing: 0.5em; 
+    text-indent: 0.5em; 
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(1.1);
+    animation: heroReveal 2.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
-#showcase-anim .split-right {
-    width: 35% !important;
-    text-align: left;
+
+@keyframes heroReveal {
+    0% { opacity: 0; filter: blur(20px); letter-spacing: 0.2em; transform: scale(1.1); }
+    100% { opacity: 1; filter: blur(0); letter-spacing: 0.5em; transform: scale(1); }
 }
-#showcase-anim .single-image-box {
+
+/* ==========================================
+   02. ✨Chara Scroll Rotation on Scroll (Apple風回転)✨
+========================================== */
+.chara-scroll-rotate-section {
+    position: relative;
+    width: 100%;
+    height: 300vh !important;     /* 共通設定の100vhを打ち消し */
+    display: block !important;    /* 共通設定のflexを打ち消し */
+    overflow: visible !important; /* ★最重要：共通設定のhiddenを解除して固定を有効化 */
+    background: transparent;
+    z-index: 10;
+}
+
+/* 固定されるエリア */
+.chara-rotate-sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 中央で回転する動画 */
+#chara-rotate-video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+/* 左右に配置するキャラクター (画像) */
+.chara-left, .chara-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25vw;
+    height: auto;
+    z-index: 10;
+    pointer-events: none;
+}
+.chara-left { left: 5%; }
+.chara-right { right: 5%; }
+
+.chara-left img, .chara-right img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0.8;
+}
+
+/* 背景を溶け込ませる影と飾り */
+.rotate-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(5,5,5,1) 0%, rgba(5,5,5,0) 20%, rgba(5,5,5,0) 80%, rgba(5,5,5,1) 100%);
+    z-index: 0;
+}
+
+/* HUDテキストステータス */
+.hud-status {
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.5);
+    z-index: 10;
+}
+
+/*Targeting Corners (Apple風装飾移植) */
+.hud-status::before, .hud-status::after {
+    content: ''; position: absolute; width: 10px; height: 10px; border: 1px solid rgba(255,255,255,0.3);
+}
+.hud-status::before { top: -15px; left: -20px; border-right: none; border-bottom: none; }
+.hud-status::after { bottom: -15px; right: -20px; border-left: none; border-top: none; }
+
+
+/* =========================================
+   03. Interactive 3D Viewer (Three.js Monitor)
+========================================= */
+.three-monitor-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     background: #050505;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
-        15px 15px 0 rgba(255, 255, 255, 0.05),
-        30px 30px 0 rgba(255, 255, 255, 0.02),
-        0 20px 50px rgba(0, 0, 0, 0.9);
-    line-height: 0;
-    overflow: hidden;
+        0 30px 60px rgba(0, 0, 0, 0.9), 
+        0 0 30px rgba(255, 255, 255, 0.05), /* 外側の微かなグロー */
+        inset 0 0 50px rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    overflow: visible; /* グローがはみ出せるように */
+}
+
+/* 3Dが描画されるエリア */
+#three-canvas-container {
+    flex-grow: 1;
     position: relative;
-}
-#showcase-anim .single-image-box img {
     width: 100%;
-    display: block;
-    opacity: 1 !important;
+    overflow: hidden;
+    cursor: grab;
 }
-.anim-reveal-text {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.6s steps(5, end); 
+#three-canvas-container:active {
+    cursor: grabbing;
 }
-.is-visible .anim-reveal-text {
-    opacity: 1;
-    transform: scale(1);
+
+/* ローディング画面 */
+.three-loading {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff; font-family: monospace; font-size: 0.8rem; letter-spacing: 0.2em;
+    display: flex; flex-direction: column; align-items: center; gap: 15px;
+    z-index: 10;
 }
-.timecode-display {
+.loading-spinner {
+    width: 30px; height: 30px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* 下部のHUDコントロールパネル */
+.three-controls {
+    height: 60px;
+    background: rgba(10, 10, 10, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 20;
+}
+
+.morph-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #aaa;
+    padding: 8px 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+.morph-btn:hover {
+    border-color: #fff; color: #fff;
+}
+.morph-btn.is-active {
+    background: #fff; color: #000; font-weight: bold;
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* モニター四隅のターゲット装飾 */
+.monitor-corner {
+    position: absolute; width: 20px; height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8); z-index: 30; pointer-events: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+.mc-tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+.mc-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+.mc-bl { bottom: 75px; left: 15px; border-right: none; border-top: none; }
+.mc-br { bottom: 75px; right: 15px; border-left: none; border-top: none; }
+
+/* データストリーム風アニメーション (Apple風装飾移植) */
+.three-monitor-wrapper::before {
+    content: '';
     position: absolute;
-    top: 50px;
-    right: 50px;
-    font-family: 'Courier New', monospace;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.2em;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1s ease;
+    top: -1px; left: 10%; width: 80%; height: 1px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    animation: dataStream 4s linear infinite;
+    z-index: 100;
 }
-.is-visible .timecode-display {
-    opacity: 1;
+@keyframes dataStream {
+    0% { transform: translateX(-100%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
 }
-.category-tag-anim::before {
-    content: '▶';
+
+
+/* =========================================
+   04. 画像比較スライダー (Wireframe Compare)
+========================================= */
+.compare-container {
+    position: relative;
+    width: 100%;
+    /* 画像の縦横比に合わせて変更してください（例は16:9） */
+    aspect-ratio: 16 / 9; 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    background: #111;
+}
+
+/* 2枚の画像をピッタリ重ねる */
+.compare-base, .compare-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* 画像自体はクリックさせない */
+}
+
+/* 上のワイヤーフレーム画像（最初は左から50%まで表示） */
+.compare-overlay {
+    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    z-index: 2;
+}
+
+/* 透明な操作用スライダー（一番手前） */
+.compare-slider {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0; /* 完全に透明 */
+    cursor: ew-resize; /* 左右の矢印カーソル */
+    z-index: 10;
+    margin: 0;
+}
+
+/* 中央の白い線とつまみ */
+.compare-handle {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%; /* 初期位置50% */
+    width: 2px;
+    background: #fff;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none; /* スライダー操作の邪魔をしない */
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
+
+/* つまみの丸いボタン */
+.handle-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px;
+    background: rgba(10, 10, 10, 0.7);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 0.7rem;
-    margin-right: 5px;
-    display: inline-block;
-    animation: playPulse 2s infinite;
-}
-@keyframes playPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    letter-spacing: -1px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
 /* =========================================
-   11. GAME DEV Section
+   05. Character Spec Panels (キャラクター解析データUI)
 ========================================= */
-#showcase-game {
-    background-color: transparent !important;
+.chara-spec-panel {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid #fff; /* 左側に太いアクセントライン */
+    padding: 25px 30px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
     position: relative;
-}
-#showcase-game .bg-media {
-    z-index: -2 !important;
-    opacity: 0.4;
-}
-#showcase-game::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: -1;
-    pointer-events: none;
-}
-#showcase-game .works-split-container {
-    justify-content: flex-end !important;
-    margin-right: 5% !important;
-    margin-left: auto;
-    max-width: 90%;
-    gap: 60px;
-}
-#showcase-game .split-right {
-    width: 35% !important;
-    text-align: right;
-}
-#showcase-game .split-left {
-    width: 55% !important;
-    flex-shrink: 0;
-    z-index: 2;
-}
-#showcase-game .single-image-box {
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px 0 20px 0; 
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
-    line-height: 0;
     overflow: hidden;
-    position: relative;
-}
-#showcase-game .single-image-box img {
-    width: 100%;
-    display: block;
-    opacity: 1 !important;
-}
-.game-reveal-text {
+    
+    /* 統合： Reveal Animation */
     opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+    transform: translateX(-30px);
+    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
 }
-.is-visible .game-reveal-text {
+
+/* セクションがis-visibleになったらパネルを出す */
+.scroll-reveal.is-visible .tech-spec-reveal {
     opacity: 1;
     transform: translateX(0);
 }
-.category-tag-game::after {
-    content: '_';
-    display: inline-block;
-    margin-left: 5px;
-    animation: typeCursor 1s infinite;
+.scroll-reveal.is-visible .tech-spec-reveal:nth-child(2) {
+    transition-delay: 0.3s; /* 2つ目のパネルは少し遅れて出す */
 }
-@keyframes typeCursor {
+
+/* パネル背景の微かなグリッド */
+.chara-spec-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: -1;
+}
+
+.spec-header {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* 録画・解析中を示す点滅ドット (旧トップ移植) */
+.blink-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #ff3333;
+    border-radius: 50%;
+    margin-right: 12px;
+    box-shadow: 0 0 10px #ff3333;
+    animation: blinkFast 1s infinite;
+}
+@keyframes blinkFast {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
-.hud-status-bar {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    width: 200px;
-    height: 2px;
-    background: rgba(255,255,255,0.2);
-    z-index: 10;
-}
-.hud-status-bar::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; height: 100%; width: 0;
-    background: #fff;
-    box-shadow: 0 0 10px #fff;
-    transition: width 1.5s ease-out;
-}
-.is-visible .hud-status-bar::after {
-    width: 100%; 
+
+.spec-list {
+    list-style: none;
+    padding: 0; margin: 0;
 }
 
-/* =========================================
-   12. PROPS Section
-========================================= */
-#showcase-props {
-    background-color: transparent !important;
-    position: relative;
+.spec-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
 }
-#showcase-props .bg-media {
-    z-index: -2 !important;
-    opacity: 0.5;
+
+.spec-list li:last-child {
+    border-bottom: none;
 }
-#showcase-props::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 60px 60px;
-    transform: perspective(600px) rotateX(70deg) translateY(-100px) scale(2);
-    transform-origin: top center;
-    z-index: -1;
-    pointer-events: none;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
-}
-#showcase-props .works-split-container {
-    justify-content: flex-start !important;
-    margin-left: 5% !important;
-    margin-right: auto;
-    max-width: 90%;
-    gap: 60px;
-}
-#showcase-props .split-left {
-    width: 55% !important;
-    flex-shrink: 0;
-    z-index: 2;
-}
-#showcase-props .split-right {
-    width: 35% !important;
-    text-align: left;
-}
-#showcase-props .single-image-box {
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px; 
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(255,255,255,0.03);
-    line-height: 0;
-    position: relative;
-}
-#showcase-props .single-image-box::before,
-#showcase-props .single-image-box::after {
-    content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid #fff; z-index: 10;
-}
-#showcase-props .single-image-box::before {
-    top: 15px; left: 15px; border-right: none; border-bottom: none;
-}
-#showcase-props .single-image-box::after {
-    bottom: 15px; right: 15px; border-left: none; border-top: none;
-}
-#showcase-props .single-image-box img {
-    width: 100%; display: block; opacity: 1 !important;
-}
-.props-reveal-text {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
-}
-.is-visible .props-reveal-text {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-.category-tag-props::before {
-    content: '[.FBX] '; 
+
+.spec-label {
     color: #888;
-    font-family: monospace;
-    letter-spacing: 0;
 }
 
+.spec-value {
+    color: #fff;
+    font-weight: bold;
+    text-align: right;
+}
+
+
 /* =========================================
-   13. BGM Control Button
+   13. BGM Control Button (完全統合)
 ========================================= */
 .bgm-btn {
     position: fixed;
@@ -840,40 +799,250 @@ section {
     0% { height: 3px; }
     100% { height: 12px; }
 }
+
+/* ==========================================
+   Responsive (Mobile)
+========================================== */
 @media (max-width: 1024px) {
-    .bgm-btn {
-        bottom: 20px;
-        left: 15px;
-        padding: 8px 12px;
-    }
-    .bgm-text {
-        font-size: 0.55rem;
+    .pill-nav { width: 90%; max-width: 400px; padding: 12px 10px; justify-content: space-around; gap: 0; bottom: 20px; }
+    .pill-nav a { font-size: 0.6rem; padding: 5px; letter-spacing: 0.05em; }
+    
+    .timeline-nav { right: 15px; padding-right: 15px; }
+    .timeline-nav a span { display: none; }
+    .timeline-nav a { width: 20px; }
+    .timeline-nav a::after { right: -19px; }
+    
+    .content-block { padding: 80px 5%; }
+    .works-split-container { flex-direction: column !important; gap: 40px; padding-bottom: 40px; }
+    .split-left, .split-right { width: 100% !important; }
+    .tech-info { text-align: center !important; }
+    
+    .bgm-btn { bottom: 20px; left: 15px; padding: 8px 12px; }
+    .bgm-text { font-size: 0.55rem; }
+    
+    /* Chara Rotation for Mobile */
+    .chara-rotate-sticky { height: 100vh; }
+    .chara-left, .chara-right { width: 30vw; }
+    #chara-rotate-video { width: 100%; height: 100%; }
+}
+
+/* モニターセクション専用の補足スタイル */
+.three-monitor-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 30px;
+}
+#three-canvas-container { width: 100%; height: calc(100% - 60px); }
+.three-controls {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    background: #0a0a0a;
+}
+.morph-btn {
+    background: none;
+    border: 1px solid #333;
+    color: #888;
+    padding: 5px 15px;
+    font-size: 0.6rem;
+    cursor: pointer;
+    font-family: monospace;
+}
+.morph-btn.is-active { background: #fff; color: #000; border-color: #fff; }
+.three-loading {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #050505; z-index: 10; display: flex; align-items: center; justify-content: center;
+}
+
+/* --- 3Dモニター操作パネルの強化デザイン --- */
+
+/* パネル全体の枠 */
+.three-controls {
+    height: auto; /* 高さを自動にして余裕を持たせる */
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap; /* ボタンが多い場合に折り返せるように */
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(180deg, #111 0%, #050505 100%);
+    border-top: 2px solid #222;
+}
+
+/* ボタンの基本デザイン */
+.morph-btn {
+    position: relative;
+    min-width: 110px; /* 横幅を確保 */
+    padding: 12px 20px;
+    font-size: 0.9rem; /* 文字を大きく */
+    font-family: 'Orbitron', monospace; /* あればテック系フォント */
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    color: #888;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 4px; /* 少し角を丸める */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+/* ホバー（マウスを乗せた時） */
+.morph-btn:hover {
+    color: #fff;
+    background: #222;
+    border-color: #555;
+    transform: translateY(-2px); /* 少し浮き上がる */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* アクティブ（選択中）の状態：発光演出 */
+.morph-btn.is-active {
+    color: #000;
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* 装飾用の小さな角デザイン（擬似要素） */
+.morph-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 4px;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5);
+}
+
+/* スマホ対応：画面が狭いときはボタンを2列にする */
+@media (max-width: 600px) {
+    .morph-btn {
+        flex: 1 1 40%; /* 2カラム */
+        font-size: 0.8rem;
+        padding: 10px;
     }
 }
 
-/* =========================================
-   自動スライドショー用スタイル（完全修正版）
-========================================= */
-.auto-slideshow {
-    display: grid !important;
+/* --- Character Page 専用セクション・デザイン --- */
+
+/* Spec Panels (Topology) */
+.spec-flex-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-/* 過去の「#showcase-env」などの強いID指定に勝つために、「body #showcase-env」という最強のセレクタを使います */
-body #showcase-env .single-image-box.auto-slideshow img,
-body section[id] .single-image-box.auto-slideshow img {
-    grid-area: 1 / 1;
+.chara-spec-panel {
+    flex: 1;
+    min-width: 320px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 2px solid #fff; /* 上部にアクセントライン */
+    position: relative;
+    transition: 0.3s;
+}
+
+.chara-spec-panel:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.spec-header {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.spec-description {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.spec-list {
+    list-style: none;
+    padding: 0;
+}
+
+.spec-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.75rem;
+}
+
+.spec-label { color: #555; font-family: monospace; }
+.spec-value { color: #fff; font-weight: bold; }
+
+/* NPR & 2D Works Grid */
+.works-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.work-item {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    aspect-ratio: 16/9;
+}
+
+.work-media {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.work-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0 !important; /* 基本は透明にする */
-    z-index: 1;
-    /* ★絶対に2.5秒かけてフワッと切り替えさせる強い命令 */
-    transition: opacity 2.5s ease-in-out !important; 
+    transition: 0.5s;
 }
 
-/* アクティブな画像だけ不透明にする */
-body #showcase-env .single-image-box.auto-slideshow img.is-active,
-body section[id] .single-image-box.auto-slideshow img.is-active {
-    opacity: 1 !important;
-    z-index: 2;
+.work-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.4s;
+}
+
+.work-item:hover .work-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.work-item:hover .work-media img {
+    transform: scale(1.05);
+    filter: brightness(0.5);
+}
+
+.work-type {
+    font-size: 0.6rem;
+    color: #ff3333;
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.work-overlay h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
+.work-overlay p { margin: 0; font-size: 0.8rem; color: #aaa; line-height: 1.5; }
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .works-grid { grid-template-columns: 1fr; }
 }
