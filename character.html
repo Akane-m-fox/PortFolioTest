@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aknfox | Character Modeling</title>
+    <title>Aknfox | Character Diagnostics</title>
+    
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="character.css">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.2/browser/pixi.min.js"></script>
+    <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
 </head>
 <body id="character-page">
 
@@ -15,348 +21,334 @@
         <a href="index.html">TOP</a>
         <a href="environment.html">ENV</a>
         <a href="character.html" class="is-current-page">CHARA</a>
-        <a href="vfx_anim.html">VFX & ANIM</a>
-        <a href="game.html">GAME</a>
-        <a href="props.html">PROPS</a>
+        <a href="#" class="coming-soon">VFX & ANIM</a>
+        <a href="#" class="coming-soon">GAME</a>
+        <a href="#" class="coming-soon">PROPS</a>
     </nav>
 
     <nav class="timeline-nav">
-        <a href="#hero" class="nav-item"><span>TOP</span></a>
-        <a href="#chara-scroll-rotate" class="nav-item"><span>ROTATION</span></a>
-        <a href="#three-canvas" class="nav-item"><span>FACIAL_RIG</span></a>
-        <a href="#wireframe-compare" class="nav-item"><span>TOPOLOGY</span></a>
-        <a href="#spec-panels" class="nav-item"><span>TECH_DATA</span></a>
-        <a href="#npr-live2d" class="nav-item"><span>NPR & 2D</span></a>
-        <a href="#contact" class="nav-item"><span>CONTACT</span></a>
+        <a href="#hero" class="nav-item is-active"><span>01_INTRO</span></a>
+        <a href="#chara-scroll-rotate" class="nav-item"><span>02_ROTATION</span></a>
+        <a href="#interactive-rig" class="nav-item"><span>03_DIAGNOSTICS</span></a>
+        <a href="#motion-showcase" class="nav-item"><span>04_DAILY_LIFE</span></a>
+        <a href="#npr-live2d" class="nav-item" style="display: none;"><span>05_2.5D_ATELIER</span></a>
     </nav>
 
-    <section id="hero" class="page-header-with-video">
-        <video class="bg-media" src="chara_demo.mp4" autoplay muted loop playsinline></video>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <span class="category-tag category-tag-chara">Anatomy & Design</span>
+    <section id="hero" class="character-hero">
+        <video class="bg-media" src="assets/high/chara_demo.mp4" autoplay muted loop playsinline></video>
+        <div class="header-content-centered">
+            <span class="category-tag">AKNFOX_MODELING_LAB</span>
             <h1 class="section-title">3D Character</h1>
         </div>
     </section>
 
     <section id="chara-scroll-rotate" class="chara-scroll-rotate-section">
         <div class="chara-rotate-sticky">
-            <video id="chara-rotate-video" src="chara_rotate_sequence.mp4" muted playsinline></video>
-            <div class="chara-left"><img src="chara_left_img.png" alt="Chara Left"></div>
-            <div class="chara-right"><img src="chara_right_img.png" alt="Chara Right"></div>
-            <div class="rotate-overlay"></div>
-            <div class="hud-status">[ SYSTEM: ROTATION_SYNC_ACTIVE ]</div>
+            <video id="chara-rotate-video" muted playsinline data-file="chara_rotate_sequence.mp4"></video>
+            <div class="rotation-text-container">
+                <div class="rot-text-block">
+                    <span class="category-tag">01. Silhouette</span>
+                    <h2>PRISTINE FORM</h2>
+                    <p>全方位から見て破綻のないシルエット。滑らかなエッジフローを構築しています。</p>
+                </div>
+                <div class="rot-text-block">
+                    <span class="category-tag">02. Texture</span>
+                    <h2>SUBTLE DETAIL</h2>
+                    <p>PBRベースでありながらイラストの温かみを感じる質感を追求しました。</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="three-canvas" class="content-block scroll-reveal">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div class="tech-info" style="text-align: center; margin-bottom: 40px;">
-                <span class="category-tag">Real-Time Rendering</span>
-                <h2 class="section-title">Interactive Facial Rig</h2>
-                <p style="color: #aaa; margin-top: 15px;">ドラッグで回転。下のボタンで表情（Shape Keys）を滑らかに制御します。</p>
+    <section id="interactive-rig" class="chara-content-block">
+        <div class="tech-header">
+            <span class="category-tag">Real-time WebGL</span>
+            <h2 class="section-title" style="color:#fff;">FACIAL_DIAGNOSTICS</h2>
+        </div>
+        <div class="rig-console-layout">
+            <div class="rig-monitor-clean">
+                <div class="monitor-frame-decor"></div>
+                <div id="three-canvas-container"></div>
+                <div id="three-loading" class="three-loading">
+                    <div class="loading-spinner"></div>
+                    <p id="progress-text">CALIBRATING...</p>
+                </div>
             </div>
-
-            <div class="three-monitor-wrapper">
-                <div id="three-canvas-container">
-                    <div class="three-loading">
-                        <span class="loading-spinner"></span>
-                        <div class="progress-text">INITIALIZING...</div>
+            <div class="rig-side-controls">
+                <div class="control-group-dark">
+                    <label style="color:#888; font-size:0.6rem;">EXPRESSION_PRESETS</label>
+                    <div class="btn-grid">
+                        <button class="morph-btn is-active" data-morph="default">NEUTRAL</button>
+                        <button class="morph-btn" data-morph="smile">SMILE</button>
+                        <button class="morph-btn" data-morph="angry">ANGRY</button>
+                        <button class="morph-btn" data-morph="sad">SAD</button>
                     </div>
                 </div>
-
-                <div class="three-controls">
-					<div style="width: 100%; text-align: left; font-size: 0.6rem; color: #444; margin-bottom: 5px; padding-left: 10px;">
-						[ MODULE: FACIAL_EXPRESSION_UNIT ]
-					</div>
-
-					<button class="morph-btn is-active" data-morph="default">DEFAULT</button>
-					<button class="morph-btn" data-morph="smile">SMILE</button>
-					<button class="morph-btn" data-morph="angry">ANGRY</button>
-
-					<div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05); margin: 5px 0;"></div>
-
-					<button class="morph-btn" data-morph="a">A</button>
-					<button class="morph-btn" data-morph="i">I</button>
-					<button class="morph-btn" data-morph="u">U</button>
-					<button class="morph-btn" data-morph="e">E</button>
-					<button class="morph-btn" data-morph="o">O</button>
-				</div>
-                
-                <div class="monitor-corner mc-tl"></div><div class="monitor-corner mc-tr"></div>
-                <div class="monitor-corner mc-bl"></div><div class="monitor-corner mc-br"></div>
+                <div class="data-card-dark">
+                    <div class="card-header" style="color:#fff; font-weight:bold; font-size:0.8rem;">MESH_ANALYSIS</div>
+                    <div class="data-row"><span>VERTICES</span><span>32,150</span></div>
+                    <div class="data-row"><span>ARKit_SHAPES</span><span>52</span></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="wireframe-compare" class="content-block scroll-reveal">
-        <div class="tech-info" style="text-align: center; margin-bottom: 40px;">
-            <span class="category-tag">Topology & Edge Flow</span>
-            <h2 class="section-title">Wireframe Analysis</h2>
+    <section id="motion-showcase" class="chara-content-block">
+        <div class="lookbook-header">
+            <span class="category-tag tag-pink">Life in Motion</span>
+            <h2 class="section-title" style="color:#fff;">Daily Performance</h2>
         </div>
-        <div class="compare-container">
-            <img src="chara_render.jpg" alt="Base" class="compare-base">
-            <img src="chara_wire.jpg" alt="Wire" class="compare-overlay">
-            <div class="compare-handle"><div class="handle-btn">◀▶</div></div>
-            <input type="range" min="0" max="100" value="50" class="compare-slider" id="wireframe-slider">
+        <div class="lookbook-grid-container">
+            <div class="photo-frame-main">
+                <video autoplay muted loop playsinline data-file="elf_morning.mp4"></video>
+                <div class="photo-caption">Morning Routine</div>
+            </div>
+            <div class="photo-stack-side">
+                <div class="photo-card-sub rot-r">
+                    <video autoplay muted loop playsinline data-file="cat_idle.mp4"></video>
+                    <video autoplay muted loop playsinline data-file="elf_reaction.mp4"></video>
+                </div>
+                <div class="photo-card-sub rot-l">
+                    <video autoplay muted loop playsinline data-file="anim_attack.mp4"></video>
+                </div>
+                <a href="#" class="view-more-btn coming-soon">FULL GALLERY (SOON)</a>
+            </div>
         </div>
     </section>
 
-   <section id="spec-panels" class="content-block scroll-reveal">
-        <div class="tech-info" style="text-align: left; margin-bottom: 40px;">
-            <span class="category-tag">Efficiency & Quality</span>
-            <h2 class="section-title">Technical Specifications</h2>
+    <section id="npr-live2d" class="chara-content-block" style="display: none;">
+        <div class="atelier-sketch-container">
+            <div class="sketch-info">
+                <span class="category-tag tag-mint">2.5D Atelier</span>
+                <h3 style="font-size: 2rem; color:#fff;">Interactive Sketch</h3>
+                <div class="sketch-stats">
+                    <div class="stat-line">Illustration <div class="dots"><span></span><span></span><span></span><span></span><span class="empty"></span></div></div>
+                    <div class="stat-line">Rigging <div class="dots"><span></span><span></span><span></span><span></span><span></span></div></div>
+                </div>
+                <div class="sketch-labels"><span>🐾 Paw-drive</span> <span>🍃 Elf-magic</span></div>
+            </div>
+            <div class="sketch-canvas-box" id="live2d-container">
+                <canvas id="live2d-canvas"></canvas>
+                <div class="sketch-tag">LOOKING_AT_YOU</div>
+            </div>
         </div>
-        
-        <div class="spec-flex-container">
-            <div class="chara-spec-panel">
-                <div class="spec-header"><span class="blink-dot"></span> DATA_01: TOPOLOGY & MESH</div>
-                <p class="spec-description">アニメーションの変形（Deform）を最適化するため、関節部のエッジループと均等なポリゴン配分を徹底。ゲームエンジン（UE/Unity）での負荷を抑えつつ、シルエットの美しさを両立させています。</p>
-                <ul class="spec-list">
-                    <li><span class="spec-label">POLYGON COUNT</span> <span class="spec-value">64,200 Triangles</span></li>
-                    <li><span class="spec-label">EDGE FLOW</span> <span class="spec-value">Deformation Optimized</span></li>
-                    <li><span class="spec-label">UV MAPPING</span> <span class="spec-value">UDIM / 2-Tiles</span></li>
-                </ul>
+    </section>
+	
+	<section id="contact" class="global-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>AKNFOX</h2>
+                <p>3D Generalist / World Builder</p>
             </div>
             
-            <div class="chara-spec-panel">
-                <div class="spec-header"><span class="blink-dot"></span> DATA_02: RIG & PHYSICS</div>
-                <p class="spec-description">ARKit準拠の52種類のシェイプキーを搭載し、フェイシャルキャプチャに対応。揺れもの（髪・スカート）にはPhysics設定を施し、動的な演出を可能にしています。</p>
-                <ul class="spec-list">
-                    <li><span class="spec-label">BONE STRUCTURE</span> <span class="spec-value">128 Joints</span></li>
-                    <li><span class="spec-label">BLEND SHAPES</span> <span class="spec-value">52 (ARKit)</span></li>
-                    <li><span class="spec-label">DYNAMIC BONE</span> <span class="spec-value">Hair, Cloth, Tails</span></li>
-                </ul>
+            <div class="footer-links">
+                <a href="https://www.youtube.com/@aknfox" target="_blank" rel="noopener">YouTube</a>
+                <a href="#" target="_blank" rel="noopener">X (Twitter)</a>
+                <a href="#" target="_blank" rel="noopener">ArtStation</a>
+                <a href="#" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            
+            <div class="footer-contact-info">
+                <p>BUSINESS INQUIRIES</p>
+                <a href="mailto:your_email@example.com" class="mail-btn">CONTACT ME</a>
             </div>
         </div>
-    </section>
-
-    <section id="npr-live2d" class="content-block scroll-reveal">
-        <div class="tech-info" style="text-align: right; margin-bottom: 40px;">
-            <span class="category-tag">Alternative Styles</span>
-            <h2 class="section-title">NPR & 2D Works</h2>
-        </div>
-
-        <div class="works-grid">
-            <div class="work-item">
-                <div class="work-media">
-                    <img src="chara_anime.jpg" alt="Ganbaru Elf">
-                    <div class="work-overlay">
-                        <span class="work-type">Original Animation</span>
-                        <h3>がんばるエルフ、今日も一日</h3>
-                        <p>セルルックシェーダー（NPR）を用いた短編アニメーション。キャラクターデザインからリギングまで一貫して制作。</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="work-item">
-                <div class="work-media">
-                    <img src="chara_live2d.jpg" alt="Cat Delivery">
-                    <div class="work-overlay">
-                        <span class="work-type">Live2D / 2D Anim</span>
-                        <h3>定時と、肉球と。</h3>
-                        <p>猫の配達員をテーマにした2.5D的な演出。テクスチャの質感を活かした温かみのあるアニメーション。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <audio id="bgm-audio" src="Crimson_Overture.mp3" loop preload="auto"></audio>
-    <button id="bgm-control" class="bgm-btn">
-        <div class="bgm-bars"><span class="bgm-bar"></span><span class="bgm-bar"></span><span class="bgm-bar"></span></div>
-        <span class="bgm-text">SOUND OFF</span>
-    </button>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
         
-        /* --- 1. スライドショー & スクロール演出 --- */
-        const initUI = () => {
-            // 自動スライド
-            document.querySelectorAll('.auto-slideshow').forEach(ss => {
-                const imgs = ss.querySelectorAll('img');
-                let cur = 0;
-                if(imgs.length > 1) setInterval(() => {
-                    imgs[cur].classList.remove('is-active');
-                    cur = (cur + 1) % imgs.length;
-                    imgs[cur].classList.add('is-active');
-                }, 4000);
-            });
+        <div class="footer-bottom">
+            <p>&copy; 2026 AKNFOX. All rights reserved.</p>
+        </div>
+    </section>
+    <script>
+			document.addEventListener('DOMContentLoaded', () => {
+				// --- 1. 画質・フォルダ設定の同期 ---
+				const qualityFolder = localStorage.getItem('site-quality') || 'high';
+				const getAssetPath = (file) => `assets/${qualityFolder}/${file}`;
 
-            // 登場アニメーション
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(e => {
-                    if(e.isIntersecting) {
-                        e.target.classList.add('is-visible');
-                        const id = e.target.getAttribute('id');
-                        document.querySelectorAll('.nav-item').forEach(nav => {
-                            nav.classList.toggle('is-active', nav.getAttribute('href') === `#${id}`);
-                        });
-                    }
-                });
-            }, { rootMargin: '-30% 0px' });
-            document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+				// 全動画のパスを一括設定
+				document.querySelectorAll('video[data-file]').forEach(v => {
+					v.src = getAssetPath(v.getAttribute('data-file'));
+					v.load(); // ★追加：パス書き換え後に強制ロード
 
-            // ワイヤスライダー
-            const slider = document.getElementById('wireframe-slider');
-            if(slider) slider.addEventListener('input', e => {
-                document.querySelector('.compare-overlay').style.clipPath = `polygon(0 0, ${e.target.value}% 0, ${e.target.value}% 100%, 0 100%)`;
-                document.querySelector('.compare-handle').style.left = `${e.target.value}%`;
-            });
-        };
-        initUI();
+					// ★追加：トップ動画など、autoplayがオンのものはJSから明示的に再生する
+					if (v.hasAttribute('autoplay')) {
+						const playPromise = v.play();
+						if (playPromise !== undefined) {
+							playPromise.catch(e => console.log("自動再生ブロック:", e));
+						}
+					}
+				});
 
-        /* --- 2. Apple風スクロール回転 --- */
-        const rv = document.getElementById('chara-rotate-video');
-        const rs = document.getElementById('chara-scroll-rotate');
-        if(rv && rs) {
-            const rotUpdate = () => {
-                const rect = rs.getBoundingClientRect();
-                const prog = Math.max(0, Math.min(0.999, (-rect.top) / (rs.offsetHeight - window.innerHeight)));
-                if(!isNaN(rv.duration)) rv.currentTime = rv.duration * prog;
-            };
-            window.addEventListener('scroll', rotUpdate);
-        }
+				// --- 2. スクロール監視 & ナビ更新 ---
+				const observer = new IntersectionObserver(entries => {
+					entries.forEach(e => {
+						if(e.isIntersecting) {
+							const id = e.target.getAttribute('id');
+							document.querySelectorAll('.nav-item').forEach(nav => {
+								const href = nav.getAttribute('href').replace('#', '');
+								nav.classList.toggle('is-active', href === id);
+							});
+							e.target.classList.add('is-visible');
+						}
+					});
+				}, { rootMargin: '-30% 0px' });
+				document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
 
-        /* --- 3. Three.js Facial Rig --- */
+				// --- 3. スクロール回転ビデオの完全制御版 ---
+				const rv = document.getElementById('chara-rotate-video');
+				const rs = document.getElementById('chara-scroll-rotate');
+				const textBlocks = document.querySelectorAll('.rot-text-block');
+
+				if (rv && rs) {
+					const setupRotation = () => {
+						const updateVideo = () => {
+							const rect = rs.getBoundingClientRect();
+							const windowHeight = window.innerHeight;
+							const scrollRange = rs.offsetHeight - windowHeight;
+
+							if (scrollRange <= 0) return; // エラー回避
+
+							const scrollDistance = -rect.top;
+							let prog = scrollDistance / scrollRange;
+							prog = Math.max(0, Math.min(0.999, prog)); // 0〜0.999に制限
+
+							// ★動画をスクロール位置に合わせてシークする
+							if (!isNaN(rv.duration) && rv.duration > 0) {
+								rv.currentTime = rv.duration * prog;
+							}
+
+							// テキストの出し分け
+							textBlocks.forEach((block, index) => {
+								const start = index === 0 ? 0.15 : 0.65;
+								const end = index === 0 ? 0.45 : 0.95;
+								if (prog > start && prog < end) {
+									block.classList.add('active');
+								} else {
+									block.classList.remove('active');
+								}
+							});
+						};
+
+						window.addEventListener('scroll', () => {
+							requestAnimationFrame(updateVideo);
+						});
+						updateVideo(); // 初回実行
+					};
+
+					// ★追加：動画のメタデータがすでにある場合は即実行、ない場合は待つ
+					if (rv.readyState >= 1) {
+						setupRotation();
+					} else {
+						rv.addEventListener('loadedmetadata', setupRotation);
+					}
+				}
+
+        // --- 4. Three.js Facial Rig ---
         const container = document.getElementById('three-canvas-container');
-        const loadInfo = document.querySelector('.three-loading .progress-text');
-
         if(container && typeof THREE !== 'undefined') {
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(0, 1.5, 1);
-
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 100);
+            camera.position.set(0, 1.5, 1.2);
+            
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.outputEncoding = THREE.sRGBEncoding;
             container.appendChild(renderer.domElement);
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-            const sun = new THREE.DirectionalLight(0xffffff, 1.0);
-            sun.position.set(1, 2, 2); scene.add(sun);
+            // 環境光（ベースの明るさ）を少し上げて全体を柔らかくする
+			scene.add(new THREE.AmbientLight(0xffffff, 0.4)); 
 
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true; controls.target.set(0, 1.6, 0);
+			// 方向光（サイドの強い光）を弱くし、位置を真正面（X=0）に移動
+			const frontLight = new THREE.DirectionalLight(0xffffff, 0.5);
+			frontLight.position.set(0, 1, 2); 
+			scene.add(frontLight);
+			
+            const orbit = new THREE.OrbitControls(camera, renderer.domElement);
+            orbit.enableDamping = true; orbit.target.set(0, 1.6, 0);
 
-            // 表情管理用
-            let morphMeshes = []; 
-            let morphDict = {}; 
-            let targetWeights = {};
+            let morphMeshes = [], morphDict = {}, targetWeights = {};
+            let blinkTimer = 0, nextBlinkTime = 2000;
 
-            const loader = new THREE.GLTFLoader();
-            loader.load('character_model.glb', (gltf) => {
+            // フォルダ設定を反映してモデルをロード
+            new THREE.GLTFLoader().load(getAssetPath('character_model.glb'), (gltf) => {
                 scene.add(gltf.scene);
-                console.log("Model Loaded");
-
-                // 表情を持つすべてのメッシュを抽出
-                gltf.scene.traverse(child => {
-                    if(child.isMesh && child.morphTargetDictionary) {
-                        console.log("Found Morph Mesh:", child.name);
-                        morphMeshes.push(child);
-                        // 代表して最初のメッシュから辞書を取得
-                        if(Object.keys(morphDict).length === 0) morphDict = child.morphTargetDictionary;
+                gltf.scene.traverse(c => {
+                    if(c.isMesh && c.morphTargetDictionary) {
+                        morphMeshes.push(c);
+                        if(Object.keys(morphDict).length === 0) morphDict = c.morphTargetDictionary;
                     }
                 });
-                document.querySelector('.three-loading').style.display = 'none';
-            }, 
-            (xhr) => {
-                if(xhr.lengthComputable && loadInfo) {
-                    const p = Math.round((xhr.loaded / xhr.total) * 100);
-                    loadInfo.innerText = `LOADING: ${p}% (${(xhr.loaded/1024/1024).toFixed(1)}MB)`;
-                }
-            },
-            (err) => { if(loadInfo) loadInfo.innerHTML = '<span style="color:red">ERROR: FILE NOT FOUND</span>'; });
+                document.getElementById('three-loading').style.display = 'none';
+            }, (xhr) => {
+                const p = Math.round(xhr.loaded / xhr.total * 100);
+                document.getElementById('progress-text').innerText = `LOADING: ${p}%`;
+            });
 
+            // モーフボタンのイベント
+            document.querySelectorAll('.morph-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.morph-btn').forEach(b => b.classList.remove('is-active'));
+                    e.currentTarget.classList.add('is-active');
+                    const mName = e.currentTarget.dataset.morph.toLowerCase();
+                    Object.keys(targetWeights).forEach(k => targetWeights[k] = 0);
+                    if(mName !== 'default') {
+                        const actualKey = Object.keys(morphDict).find(key => key.toLowerCase().includes(mName));
+                        if(actualKey) targetWeights[actualKey] = 1;
+                    }
+                });
+            });
 
-            // 内部変数
-        let blinkTimer = 0;
-        let nextBlinkTime = Math.random() * 3000 + 2000;
-        const BLINK_DURATION = 250; // 瞬きの長さを150ms→250msに延長
-
-        // ボタン連動の強化版
-        document.querySelectorAll('.morph-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const currentBtn = e.currentTarget;
-                document.querySelectorAll('.morph-btn').forEach(b => b.classList.remove('is-active'));
-                currentBtn.classList.add('is-active');
-
-                // data-morphの値を取得（小文字にする）
-                const mName = currentBtn.dataset.morph.toLowerCase();
+            const animate = () => {
+                requestAnimationFrame(animate);
+                orbit.update();
                 
-                // 全表情リセット
-                for(let k in targetWeights) targetWeights[k] = 0;
-
-                if(mName !== 'default') {
-                    // モデルのキーから「名前が含まれているもの」を柔軟に探す
-                    // これで "O" でも "vowel_o" でも "mouth_O" でも反応しやすくなります
-                    const actualKey = Object.keys(morphDict).find(key => 
-                        key.toLowerCase() === mName || key.toLowerCase().includes('_' + mName)
-                    );
-                    
-                    if(actualKey) {
-                        targetWeights[actualKey] = 1;
-                        console.log("表情を適用:", actualKey);
-                    } else {
-                        console.warn("モデル内に該当するキーが見つかりません:", mName);
-                    }
+                // 自動まばたき
+                blinkTimer += 16;
+                let blinkValue = 0;
+                if (blinkTimer > nextBlinkTime) {
+                    if (blinkTimer - nextBlinkTime < 200) blinkValue = Math.sin(((blinkTimer - nextBlinkTime)/200) * Math.PI);
+                    else { blinkTimer = 0; nextBlinkTime = Math.random() * 4000 + 2000; }
                 }
-            });
-        });
 
-        const animate = () => {
-            requestAnimationFrame(animate);
-            controls.update();
-
-            // --- 1. 自動瞬きの計算 ---
-            blinkTimer += 16; // 約60fps
-            let blinkValue = 0;
-            if (blinkTimer > nextBlinkTime) {
-                const blinkProcess = blinkTimer - nextBlinkTime;
-                if (blinkProcess < BLINK_DURATION) {
-                    // サイン波で0→1→0を作る
-                    blinkValue = Math.sin((blinkProcess / BLINK_DURATION) * Math.PI);
-                } else {
-                    blinkTimer = 0;
-                    nextBlinkTime = Math.random() * 4000 + 2000; // 次は2〜6秒後
-                }
-            }
-
-            // --- 2. 全メッシュの表情を更新 ---
-            morphMeshes.forEach(mesh => {
-                for(let k in morphDict) {
-                    const idx = mesh.morphTargetDictionary[k];
-                    if(idx !== undefined) {
-                        const cur = mesh.morphTargetInfluences[idx];
+                morphMeshes.forEach(mesh => {
+                    for(let k in morphDict) {
+                        const idx = mesh.morphTargetDictionary[k];
                         let tar = targetWeights[k] || 0;
-
-                        // 瞬き用キー(blink, eyesClosedなど)の判定
-                        const isBlinkKey = k.toLowerCase().includes('blink') || k.toLowerCase().includes('eyesclosed');
-                        
-                        if (isBlinkKey) {
-                            tar = Math.max(tar, blinkValue);
-                        }
-
-                        // 追従スピードの調整
-                        // 瞬き(tar > 0)の時は 0.4 で爆速反応、それ以外は 0.1 でぬるっと動かす
-                        const lerpSpeed = (isBlinkKey && tar > 0) ? 0.4 : 0.1;
-                        mesh.morphTargetInfluences[idx] += (tar - cur) * lerpSpeed;
+                        if (k.toLowerCase().includes('blink')) tar = Math.max(tar, blinkValue);
+                        mesh.morphTargetInfluences[idx] += (tar - mesh.morphTargetInfluences[idx]) * 0.1;
                     }
-                }
-            });
-
-            renderer.render(scene, camera);
-        };
-        animate();
-
+                });
+                renderer.render(scene, camera);
+            };
+            animate();
             window.addEventListener('resize', () => {
-                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.aspect = container.clientWidth/container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
             });
         }
+
+        // --- 5. Live2D ---
+        const initLive2D = async () => {
+            const l2dContainer = document.getElementById('live2d-container');
+            const canvas = document.getElementById('live2d-canvas');
+            if(!l2dContainer || !canvas || typeof PIXI === 'undefined') return;
+            try {
+                const app = new PIXI.Application({ view: canvas, backgroundAlpha: 0, resizeTo: l2dContainer });
+                // サンプルモデル
+                const model = await PIXI.live2d.Live2DModel.from('https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display@master/test/assets/haru/haru_greeter_t03.model3.json');
+                app.stage.addChild(model);
+                const fit = () => {
+                    const s = Math.min(l2dContainer.clientWidth / model.width, l2dContainer.clientHeight / model.height) * 1.1;
+                    model.scale.set(s);
+                    model.x = (l2dContainer.clientWidth - model.width * s) / 2;
+                    model.y = (l2dContainer.clientHeight - model.height * s) / 2 + 50;
+                };
+                fit(); window.addEventListener('resize', fit);
+                app.stage.interactive = true;
+                app.stage.on('pointermove', (e) => model.focus(e.data.global.x, e.data.global.y));
+            } catch (err) { console.error(err); }
+        };
+        initLive2D();
     });
     </script>
 </body>

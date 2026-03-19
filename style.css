@@ -1,1048 +1,267 @@
 @charset "UTF-8";
 
-/* ==========================================
-   1. Base & Reset
-========================================== */
-html { 
-    scroll-behavior: smooth; 
-}
-body { 
-    margin: 0; 
-    font-family: "Helvetica Neue", Arial, sans-serif; 
-    background: #050505; 
-    color: #fff; 
-    position: relative;
-}
-/* 画面全体に微かな走査線（スキャンライン）を重ねる (旧トップ移植) */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-        transparent,
-        transparent 1px,
-        rgba(255, 255, 255, 0.01) 1px,
-        rgba(255, 255, 255, 0.01) 2px
-    );
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.5;
+/* ==========================================================================
+   [0] SYSTEM & BASE (共通の土台：原則変更しない)
+========================================================================== */
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0; padding: 0; width: 100%;
+    background: #050505; color: #fff;
+    font-family: "Helvetica Neue", Arial, sans-serif; /* 全体のベースフォント */
+    overflow-x: clip; scroll-behavior: smooth;
 }
 
-/* 旧ポートフォリオ背景アニメーション (移植) */
-#vanta-background {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: -10;
+/* 画面全体の走査線（スキャンライン）演出 */
+body::after {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(transparent, transparent 1px, rgba(255, 255, 255, 0.01) 1px, rgba(255, 255, 255, 0.01) 2px);
+    pointer-events: none; z-index: 9999; opacity: 0.5;
 }
 
 section { 
-    position: relative; 
-    height: 100vh; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    overflow: hidden; 
-}
-.bg-media { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    z-index: -1; 
-    opacity: 0.6; 
-}
-.content-box { 
-    position: relative; 
-    z-index: 1; 
-    text-align: center; 
-}
-.section-title { 
-    font-size: clamp(1.5rem, 4vw, 3rem); 
-    letter-spacing: 0.15em; 
-    text-shadow: 0 4px 20px rgba(0,0,0,0.9); 
-    font-weight: 100; 
-    margin: 0; 
-}
-.section-desc { 
-    color: #aaa; 
-    font-size: 0.9rem; 
-    letter-spacing: 0.1em; 
-    margin-top: 10px; 
+    position: relative; width: 100%; height: 100vh; 
+    display: flex; justify-content: center; align-items: center; overflow: hidden; 
 }
 
-/* ==========================================
-   2. UI-A: Global Navigation (Pill)
-========================================== */
+.bg-media { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    object-fit: cover; z-index: -2; opacity: 0.4; 
+}
+
+/* ==========================================================================
+   [1] COMMON COMPONENTS (共通パーツ：ボタン、タグ、分割レイアウト等)
+========================================================================== */
+/* 作品紹介の左右分割レイアウト */
+.works-split-container { 
+    width: 90%; max-width: 1400px; margin: 0 auto; 
+    display: flex; align-items: center; gap: 80px; 
+}
+.split-left, .split-right { flex: 1; }
+
+/* 共通テキストスタイル */
+.section-title { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: 0.3em; font-weight: 100; margin: 0; }
+.section-desc { color: #aaa; margin-top: 10px; letter-spacing: 0.1em; }
+.category-tag { 
+    display: inline-block; font-size: 0.6rem; letter-spacing: 0.3em; 
+    border: 1px solid rgba(255, 255, 255, 0.3); padding: 4px 12px; margin-bottom: 15px; 
+}
+
+/* 共通リンクボタン */
+.view-more-btn {
+    display: inline-block; color: #fff; text-decoration: none; font-size: 0.7rem; 
+    letter-spacing: 0.2em; border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px; transition: 0.3s;
+}
+.view-more-btn:hover { border-color: #fff; letter-spacing: 0.3em; }
+
+/* 単一画像ボックス（旧ショーケース用） */
+.single-image-box { 
+    position: relative; background: #000; border: 1px solid rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; 
+}
+
+/* 汎用スクロール登場（旧ショーケース用） */
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1); }
+.scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ==========================================================================
+   [2] NAVIGATION (ピルナビ、タイムライン、BGM)
+========================================================================== */
 .pill-nav {
-    position: fixed; 
-    bottom: 30px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    display: flex; 
-    align-items: center; 
-    gap: 10px;
-    background: rgba(20, 20, 20, 0.65); 
-    backdrop-filter: blur(20px) saturate(180%); 
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    padding: 12px 25px; 
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.8); 
-    z-index: 1000;
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(20, 20, 20, 0.65); backdrop-filter: blur(20px);
+    padding: 12px 25px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
 }
 .pill-nav a { 
-    position: relative; 
-    color: #fff; 
-    text-decoration: none; 
-    font-size: 0.7rem; 
-    letter-spacing: 0.1em; 
-    padding: 5px 12px; 
-    opacity: 0.5; 
-    transition: 0.3s; 
+    color: #fff; text-decoration: none; font-size: 0.7rem; letter-spacing: 0.1em; 
+    padding: 5px 12px; opacity: 0.5; transition: 0.3s; 
 }
-.pill-nav a:hover { 
-    opacity: 1; 
-}
-.pill-nav a.is-current-page { 
-    opacity: 1; 
-    font-weight: bold; 
-}
-.pill-nav a.is-current-page::after { 
-    content: ''; 
-    position: absolute; 
-    bottom: -2px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 4px; 
-    height: 4px; 
-    background: #fff; 
-    border-radius: 50%; 
-    box-shadow: 0 0 8px #fff; 
-}
+.pill-nav a.is-current-page, .pill-nav a:hover { opacity: 1; }
 
-/* ==========================================
-   3. UI-B: Local Navigation (Timeline)
-========================================== */
 .timeline-nav {
-    position: fixed; 
-    top: 50%; 
-    right: 40px; 
-    transform: translateY(-50%);
-    display: flex; 
-    flex-direction: column; 
-    gap: 30px;
-    border-right: 1px solid rgba(255, 255, 255, 0.2); 
-    padding-right: 20px; 
-    z-index: 999;
+    position: fixed; top: 50%; right: 40px; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 25px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2); padding-right: 20px; z-index: 999;
 }
 .timeline-nav a { 
-    display: block; 
-    position: relative; 
-    color: #fff; 
-    text-decoration: none; 
-    font-size: 0.65rem; 
-    letter-spacing: 0.2em; 
-    text-align: right; 
-    opacity: 0.3; 
-    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-    height: 20px; 
-    line-height: 20px; 
+    color: #fff; text-decoration: none; font-size: 0.65rem; letter-spacing: 0.2em; 
+    text-align: right; opacity: 0.3; transition: 0.4s; 
 }
-.timeline-nav a::after { 
-    content: ''; 
-    position: absolute; 
-    top: 50%; 
-    right: -24px; 
-    transform: translateY(-50%); 
-    width: 7px; 
-    height: 7px; 
-    background: rgba(255, 255, 255, 0.3); 
-    border-radius: 50%; 
-    transition: 0.3s; 
-}
-.timeline-nav a:hover,
-.timeline-nav a.nav-item.is-active { 
-    opacity: 1; 
-    font-weight: bold;
-}
-.timeline-nav a:hover::after,
-.timeline-nav a.nav-item.is-active::after { 
-    background: #fff; 
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8); 
-    transform: translateY(-50%) scale(1.4); 
-}
+.timeline-nav a.is-active { opacity: 1; font-weight: bold; }
+.coming-soon { pointer-events: none !important; opacity: 0.25 !important; cursor: default; }
 
-/* ==========================================
-   4. Layout & Typography
-========================================== */
-.content-block {
-    padding: 120px 5%; 
-    box-sizing: border-box;
-}
-.works-split-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 80px; 
-}
-.tech-info h3 {
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: 100;
-    line-height: 1.1;
-    margin: 15px 0 25px 0;
-    border-left: 1px solid #fff;
-    padding-left: 20px;
-    letter-spacing: 0.05em;
-}
-.tech-info p {
-    color: #ccc;
-    line-height: 1.8;
-    margin-bottom: 30px;
-}
-.view-more-btn {
-    display: inline-block;
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    padding: 10px 0;
-    position: relative;
-    transition: all 0.4s ease;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
-}
-.view-more-btn::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: #fff;
-    transition: width 0.4s ease; 
-}
-.view-more-btn:hover {
-    letter-spacing: 0.3em; 
-    opacity: 1;
-}
-.view-more-btn:hover::after {
-    width: 100%;
-}
-.category-tag {
-    display: inline-block;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 4px 12px;
-    margin-bottom: 15px;
-    color: rgba(255, 255, 255, 0.8);
-    position: relative;
-}
-.category-tag::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 10px;
-    width: 5px;
-    height: 1px;
-    background: #050505; 
-}
-.single-image-box {
-    position: relative;
-    z-index: 2;
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
-    line-height: 0; 
-    overflow: hidden;
-}
-.single-image-box img {
-    display: block;
-    width: 100%;
-}
-
-/* ==========================================
-   5. Reveal Animations (Common)
-========================================== */
-.scroll-reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
-}
-.scroll-reveal.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 自動スライドショー用スタイル（完全版） */
-.auto-slideshow {
-    display: grid !important;
-}
-
-section .single-image-box.auto-slideshow img {
-    grid-area: 1 / 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0 !important; /* 基本は透明にする */
-    z-index: 1;
-    /* 2.5秒かけて超ゆっくりクロスフェードさせる */
-    transition: opacity 2.5s ease-in-out !important; 
-}
-
-/* アクティブな画像だけ不透明にする */
-section .single-image-box.auto-slideshow img.is-active {
-    opacity: 1 !important;
-    z-index: 2;
-}
-
-/* NPR/Live2Dの画像内文字タグ */
-.category-tag-over {
-    position: absolute; 
-    bottom: 20px; 
-    left: 20px; 
-    font-family: monospace; 
-    font-size: 0.8rem; 
-    background: #000; 
-    padding: 5px 10px;
-    z-index: 10;
-    color: #fff;
-    letter-spacing: 0.1em;
-}
-
-/* =========================================
-   6. HERO Section (移植 & 強化)
-========================================= */
-.page-header-with-video {
-    position: relative;
-    padding: 180px 5% 80px;
-    text-align: center;
-    overflow: hidden;
-    height: 100vh;
-}
-
-/* 動画の不透明度を調整 */
-.page-header-with-video .bg-media {
-    z-index: -2 !important;
-    opacity: 0.4; 
-    
-}
-
-/* 動画の下側を自然に溶け込ませる影 (統合) */
-.page-header-with-video .header-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%);
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* フィルムノイズ (旧トップ移植) */
-.page-header-with-video::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8xMy8xOdI4u48AAAAfdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAB50RVh0VGl0bGUAQmFja2dyb3VuZCBOb2lzZSBUZXh0dXJlve0p6AAAAD5JREFUeF7t1AENAAAIwzBy+reYw5WEYwU6u4mJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYlt8wE9xwU8p5C6+AAAAABJRU5ErkJggg==');
-    opacity: 0.03;
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* タイトル見出し (グロー効果移植) */
-.page-header-with-video .section-title {
-    font-size: clamp(3rem, 6vw, 5rem); 
-    letter-spacing: 0.5em; 
-    text-indent: 0.5em; 
-    text-transform: uppercase;
-    background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    opacity: 0;
-    filter: blur(10px);
-    transform: scale(1.1);
-    animation: heroReveal 2.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-@keyframes heroReveal {
-    0% { opacity: 0; filter: blur(20px); letter-spacing: 0.2em; transform: scale(1.1); }
-    100% { opacity: 1; filter: blur(0); letter-spacing: 0.5em; transform: scale(1); }
-}
-
-/* ==========================================
-   02. ✨Chara Scroll Rotation on Scroll (Apple風回転)✨
-========================================== */
-.chara-scroll-rotate-section {
-    position: relative;
-    width: 100%;
-    height: 300vh !important;     /* 共通設定の100vhを打ち消し */
-    display: block !important;    /* 共通設定のflexを打ち消し */
-    overflow: visible !important; /* ★最重要：共通設定のhiddenを解除して固定を有効化 */
-    background: transparent;
-    z-index: 10;
-}
-
-/* 固定されるエリア */
-.chara-rotate-sticky {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* 中央で回転する動画 */
-#chara-rotate-video {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.6;
-}
-
-/* 左右に配置するキャラクター (画像) */
-.chara-left, .chara-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 25vw;
-    height: auto;
-    z-index: 10;
-    pointer-events: none;
-}
-.chara-left { left: 5%; }
-.chara-right { right: 5%; }
-
-.chara-left img, .chara-right img {
-    width: 100%;
-    height: auto;
-    display: block;
-    opacity: 0.8;
-}
-
-/* 背景を溶け込ませる影と飾り */
-.rotate-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, rgba(5,5,5,1) 0%, rgba(5,5,5,0) 20%, rgba(5,5,5,0) 80%, rgba(5,5,5,1) 100%);
-    z-index: 0;
-}
-
-/* HUDテキストステータス */
-.hud-status {
-    position: absolute;
-    bottom: 5vh;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    color: rgba(255, 255, 255, 0.5);
-    z-index: 10;
-}
-
-/*Targeting Corners (Apple風装飾移植) */
-.hud-status::before, .hud-status::after {
-    content: ''; position: absolute; width: 10px; height: 10px; border: 1px solid rgba(255,255,255,0.3);
-}
-.hud-status::before { top: -15px; left: -20px; border-right: none; border-bottom: none; }
-.hud-status::after { bottom: -15px; right: -20px; border-left: none; border-top: none; }
-
-
-/* =========================================
-   03. Interactive 3D Viewer (Three.js Monitor)
-========================================= */
-.three-monitor-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.9), 
-        0 0 30px rgba(255, 255, 255, 0.05), /* 外側の微かなグロー */
-        inset 0 0 50px rgba(255, 255, 255, 0.02);
-    display: flex;
-    flex-direction: column;
-    overflow: visible; /* グローがはみ出せるように */
-}
-
-/* 3Dが描画されるエリア */
-#three-canvas-container {
-    flex-grow: 1;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    cursor: grab;
-}
-#three-canvas-container:active {
-    cursor: grabbing;
-}
-
-/* ローディング画面 */
-.three-loading {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff; font-family: monospace; font-size: 0.8rem; letter-spacing: 0.2em;
-    display: flex; flex-direction: column; align-items: center; gap: 15px;
-    z-index: 10;
-}
-.loading-spinner {
-    width: 30px; height: 30px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-top-color: #fff; border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-/* 下部のHUDコントロールパネル */
-.three-controls {
-    height: 60px;
-    background: rgba(10, 10, 10, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    z-index: 20;
-}
-
-.morph-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #aaa;
-    padding: 8px 20px;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-}
-.morph-btn:hover {
-    border-color: #fff; color: #fff;
-}
-.morph-btn.is-active {
-    background: #fff; color: #000; font-weight: bold;
-    box-shadow: 0 0 10px rgba(255,255,255,0.5);
-}
-
-/* モニター四隅のターゲット装飾 */
-.monitor-corner {
-    position: absolute; width: 20px; height: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.8); z-index: 30; pointer-events: none;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-.mc-tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-.mc-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
-.mc-bl { bottom: 75px; left: 15px; border-right: none; border-top: none; }
-.mc-br { bottom: 75px; right: 15px; border-left: none; border-top: none; }
-
-/* データストリーム風アニメーション (Apple風装飾移植) */
-.three-monitor-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 10%; width: 80%; height: 1px;
-    background: linear-gradient(90deg, transparent, #fff, transparent);
-    animation: dataStream 4s linear infinite;
-    z-index: 100;
-}
-@keyframes dataStream {
-    0% { transform: translateX(-100%); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateX(100%); opacity: 0; }
-}
-
-
-/* =========================================
-   04. 画像比較スライダー (Wireframe Compare)
-========================================= */
-.compare-container {
-    position: relative;
-    width: 100%;
-    /* 画像の縦横比に合わせて変更してください（例は16:9） */
-    aspect-ratio: 16 / 9; 
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
-    overflow: hidden;
-    background: #111;
-}
-
-/* 2枚の画像をピッタリ重ねる */
-.compare-base, .compare-overlay {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    pointer-events: none; /* 画像自体はクリックさせない */
-}
-
-/* 上のワイヤーフレーム画像（最初は左から50%まで表示） */
-.compare-overlay {
-    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-    z-index: 2;
-}
-
-/* 透明な操作用スライダー（一番手前） */
-.compare-slider {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0; /* 完全に透明 */
-    cursor: ew-resize; /* 左右の矢印カーソル */
-    z-index: 10;
-    margin: 0;
-}
-
-/* 中央の白い線とつまみ */
-.compare-handle {
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 50%; /* 初期位置50% */
-    width: 2px;
-    background: #fff;
-    transform: translateX(-50%);
-    z-index: 5;
-    pointer-events: none; /* スライダー操作の邪魔をしない */
-    box-shadow: 0 0 15px rgba(0,0,0,0.8);
-}
-
-/* つまみの丸いボタン */
-.handle-btn {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 44px; height: 44px;
-    background: rgba(10, 10, 10, 0.7);
-    border: 2px solid #fff;
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.7rem;
-    letter-spacing: -1px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-/* =========================================
-   05. Character Spec Panels (キャラクター解析データUI)
-========================================= */
-.chara-spec-panel {
-    flex: 1;
-    min-width: 300px;
-    background: rgba(10, 10, 10, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 3px solid #fff; /* 左側に太いアクセントライン */
-    padding: 25px 30px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-    
-    /* 統合： Reveal Animation */
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-/* セクションがis-visibleになったらパネルを出す */
-.scroll-reveal.is-visible .tech-spec-reveal {
-    opacity: 1;
-    transform: translateX(0);
-}
-.scroll-reveal.is-visible .tech-spec-reveal:nth-child(2) {
-    transition-delay: 0.3s; /* 2つ目のパネルは少し遅れて出す */
-}
-
-/* パネル背景の微かなグリッド */
-.chara-spec-panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    z-index: -1;
-}
-
-.spec-header {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
-    letter-spacing: 0.15em;
-    color: #fff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-}
-
-/* 録画・解析中を示す点滅ドット (旧トップ移植) */
-.blink-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: #ff3333;
-    border-radius: 50%;
-    margin-right: 12px;
-    box-shadow: 0 0 10px #ff3333;
-    animation: blinkFast 1s infinite;
-}
-@keyframes blinkFast {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-.spec-list {
-    list-style: none;
-    padding: 0; margin: 0;
-}
-
-.spec-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-}
-
-.spec-list li:last-child {
-    border-bottom: none;
-}
-
-.spec-label {
-    color: #888;
-}
-
-.spec-value {
-    color: #fff;
-    font-weight: bold;
-    text-align: right;
-}
-
-
-/* =========================================
-   13. BGM Control Button (完全統合)
-========================================= */
+/* BGMボタン */
 .bgm-btn {
-    position: fixed;
-    bottom: 40px;
-    left: 40px; 
-    z-index: 1000;
-    background: rgba(10, 10, 10, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    padding: 10px 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.3s ease;
-    border-radius: 4px;
+    position: fixed; bottom: 40px; left: 40px; z-index: 1000;
+    background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
+    padding: 10px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-radius: 4px;
 }
-.bgm-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-.bgm-text {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    font-weight: bold;
-}
-.bgm-bars {
-    display: flex;
-    align-items: flex-end;
-    height: 12px;
-    gap: 2px;
-}
-.bgm-bar {
-    width: 2px;
-    height: 3px;
-    background: #fff;
-    transition: height 0.2s;
-    opacity: 0.5;
-}
-.bgm-btn.is-playing {
-    border-color: #ff3333; 
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-}
-.bgm-btn.is-playing .bgm-text {
-    color: #ff3333;
-}
-.bgm-btn.is-playing .bgm-bar {
-    background: #ff3333;
-    opacity: 1;
-    animation: soundBounce 1s infinite alternate ease-in-out;
-}
-.bgm-btn.is-playing .bgm-bar:nth-child(1) { animation-delay: 0.0s; }
-.bgm-btn.is-playing .bgm-bar:nth-child(2) { animation-delay: 0.3s; }
-.bgm-btn.is-playing .bgm-bar:nth-child(3) { animation-delay: 0.1s; }
+.bgm-btn.is-playing { border-color: #ff3333; color: #ff3333; }
+.bgm-bars { display: flex; align-items: flex-end; height: 12px; gap: 2px; }
+.bgm-bar { width: 2px; height: 3px; background: currentColor; }
+.is-playing .bgm-bar { animation: soundBounce 1s infinite alternate; }
 
-@keyframes soundBounce {
-    0% { height: 3px; }
-    100% { height: 12px; }
-}
+/* ==========================================================================
+   [3] TOP PAGE: HERO SECTION
+========================================================================== */
+#hero { background: #000; }
+#hero .bg-media { object-fit: cover; object-position: center; opacity: 1; z-index: 1; }
+#hero .hero-content { position: relative; z-index: 2; text-align: center; width: 100%; max-width: 1000px; padding: 0 5%; }
 
-/* ==========================================
-   Responsive (Mobile)
-========================================== */
-@media (max-width: 1024px) {
-    .pill-nav { width: 90%; max-width: 400px; padding: 12px 10px; justify-content: space-around; gap: 0; bottom: 20px; }
-    .pill-nav a { font-size: 0.6rem; padding: 5px; letter-spacing: 0.05em; }
-    
-    .timeline-nav { right: 15px; padding-right: 15px; }
-    .timeline-nav a span { display: none; }
-    .timeline-nav a { width: 20px; }
-    .timeline-nav a::after { right: -19px; }
-    
-    .content-block { padding: 80px 5%; }
-    .works-split-container { flex-direction: column !important; gap: 40px; padding-bottom: 40px; }
-    .split-left, .split-right { width: 100% !important; }
-    .tech-info { text-align: center !important; }
-    
-    .bgm-btn { bottom: 20px; left: 15px; padding: 8px 12px; }
-    .bgm-text { font-size: 0.55rem; }
-    
-    /* Chara Rotation for Mobile */
-    .chara-rotate-sticky { height: 100vh; }
-    .chara-left, .chara-right { width: 30vw; }
-    #chara-rotate-video { width: 100%; height: 100%; }
-}
+#hero .hero-content .category-tag { background: transparent; border: none; padding: 0; }
+#hero .hero-content h1 {
+    font-size: clamp(3rem, 12vw, 8rem); font-weight: 200; letter-spacing: 0.4em; margin: 0;
+    background: linear-gradient(135deg, #fff 0%, #a1c4fd 25%, #ffffff 50%, #ff9a9e 75%, #fff 100%);
+    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: heroReveal 3s ease-out forwards, heroGlow 4s ease-in-out infinite alternate, heroShine 8s linear infinite;
 
-/* モニターセクション専用の補足スタイル */
-.three-monitor-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: #000;
-    border: 1px solid rgba(255,255,255,0.1);
-    margin-top: 30px;
+    /* ▼ 右端が切れるブラウザバグを強制的に防ぐ最強セット ▼ */
+    display: inline-block; /* ブロック要素から変更して描画エリアを文字にフィットさせる */
+    padding: 0 0.2em;      /* 左右に見えない余白を作り、Xの端をグラデーション内に収める */
 }
-#three-canvas-container { width: 100%; height: calc(100% - 60px); }
-.three-controls {
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    background: #0a0a0a;
+#hero .hero-content p { font-size: 1.1rem; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.4); margin-top: 30px; opacity: 0; animation: simpleFadeIn 2s ease-out 2.5s forwards; }
+
+/* ==========================================================================
+   [4] TOP PAGE: ENVIRONMENT SECTION (High-End Architectural Edit)
+========================================================================== */
+#showcase-env {
+    background: #050505; height: auto; min-height: 100vh; padding: 120px 0;
 }
-.morph-btn {
-    background: none;
-    border: 1px solid #333;
-    color: #888;
-    padding: 5px 15px;
-    font-size: 0.6rem;
-    cursor: pointer;
-    font-family: monospace;
-}
-.morph-btn.is-active { background: #fff; color: #000; border-color: #fff; }
-.three-loading {
+#showcase-env .env-bg-video {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: #050505; z-index: 10; display: flex; align-items: center; justify-content: center;
+    object-fit: cover; 
+    opacity: 0.1; /* ← ★ここを調整します！ */
+    z-index: 1; 
+    mix-blend-mode: screen; 
+    pointer-events: none;
+}
+#showcase-env .works-split-container { z-index: 2; max-width: 1500px; }
+#showcase-env .works-visual { flex: 1.3; perspective: 2000px; }
+
+/* 建築パース用ビジュアルフレーム */
+.env-visual-frame {
+    position: relative; padding: 15px; border: 1px solid rgba(255,255,255,0.03);
+    background: rgba(0,0,0,0.5); box-shadow: 0 50px 150px rgba(0,0,0,0.9);
+    transform: rotateY(-10deg) rotateX(5deg) translateZ(-50px); opacity: 0; filter: blur(15px);
+    transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#showcase-env.is-visible .env-visual-frame { transform: rotateY(0deg) rotateX(0deg) translateZ(0px); opacity: 1; filter: blur(0px); }
+
+.env-media-container { position: relative; overflow: hidden; line-height: 0; }
+.env-visual-frame video { width: 100%; height: auto; display: block; transition: opacity 1s ease, transform 2.5s ease; }
+.env-visual-frame:hover video { opacity: 0.08; transform: scale(1.02); }
+
+/* ホバー時のワイヤーフレーム（青写真） */
+.env-visual-frame::after {
+    content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
+    background-image: linear-gradient(rgba(0,162,255,0.15) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(0,162,255,0.15) 1.5px, transparent 1.5px);
+    background-size: 25px 25px; z-index: -1; opacity: 0; transition: opacity 1s ease;
+}
+.env-visual-frame:hover::after { opacity: 1; }
+
+/* 寸法線＆UI装飾 */
+.dimension-line { position: absolute; color: rgba(255,255,255,0.1); font-family: monospace; font-size: 8px; letter-spacing: 1.5px; }
+.dim-v { top: 15px; bottom: 15px; right: 0; width: 0.5px; background: rgba(255,255,255,0.05); }
+.dim-v::before { content: '24,500mm'; position: absolute; top: 50%; right: 4px; transform: rotate(90deg) translateY(-50%); white-space: nowrap; }
+.dim-h { left: 15px; right: 15px; bottom: 0; height: 0.5px; background: rgba(255,255,255,0.05); }
+.dim-h::before { content: '48,200mm'; position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); }
+#showcase-env .camera-ui { position: absolute; top: 10px; left: 10px; font-family: monospace; font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; }
+
+/* 右側：テキストエリアの重厚化 */
+#showcase-env .works-info { flex: 0.7; }
+
+/* 初期状態は見えない（アニメーション用） */
+#showcase-env .category-tag, #showcase-env .section-title, 
+#showcase-env .section-desc, #showcase-env .tech-stack, #showcase-env .detail-link {
+    opacity: 0; filter: blur(10px); transform: translateY(20px);
 }
 
-/* --- 3Dモニター操作パネルの強化デザイン --- */
+#showcase-env .category-tag { font-family: monospace; font-size: 0.75rem; letter-spacing: 0.5em; color: rgba(255, 255, 255, 0.4); border: none; padding: 0; }
+#showcase-env .section-title { 
+    font-weight: 100; letter-spacing: 0.25em; line-height: 1.1; margin-bottom: 30px;
+    background: linear-gradient(to bottom, #fff 40%, #777 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+#showcase-env .section-desc { font-weight: 300; line-height: 1.8; color: rgba(255, 255, 255, 0.6); }
+#showcase-env .tech-stack { display: flex; gap: 20px; font-size: 10px; color: #666; font-family: monospace; letter-spacing: 0.1em; margin-top: 30px;}
 
-/* パネル全体の枠 */
-.three-controls {
-    height: auto; /* 高さを自動にして余裕を持たせる */
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap; /* ボタンが多い場合に折り返せるように */
-    justify-content: center;
-    gap: 12px;
-    background: linear-gradient(180deg, #111 0%, #050505 100%);
-    border-top: 2px solid #222;
+/* 建築的なリンクボタン */
+#showcase-env .detail-link {
+    margin-top: 50px; display: inline-block; color: #fff; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.4em;
+    padding: 15px 40px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: monospace; transition: all 0.5s ease;
+}
+#showcase-env .detail-link:hover { border-color: #fff; background: rgba(255,255,255,0.03); box-shadow: 0 0 30px rgba(255,255,255,0.1); }
+#showcase-env .detail-link::after {
+    content: ''; position: absolute; width: 25px; height: 1px; background: #fff;
+    top: 50%; right: 15px; transform: translateY(-50%) translateX(25px); opacity: 0; transition: all 0.5s ease;
+}
+#showcase-env .detail-link:hover::after { transform: translateY(-50%) translateX(0); opacity: 1; }
+
+/* Environmentアニメーション発動（重厚なシネマティックフェード） */
+#showcase-env.is-visible .category-tag { animation: cinematicReveal 2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards; }
+#showcase-env.is-visible .section-title { animation: cinematicReveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards; }
+#showcase-env.is-visible .section-desc { animation: cinematicReveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.0s forwards; }
+#showcase-env.is-visible .tech-stack { animation: cinematicReveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.3s forwards; }
+#showcase-env.is-visible .detail-link { animation: cinematicReveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s forwards; }
+
+/* ==========================================================================
+   [5] TOP PAGE: OTHER SHOWCASE SECTIONS (現状維持)
+========================================================================== */
+/* ※今後ここにCharacterやVFXの専用スタイルを追加します */
+
+/* ==========================================================================
+   [6] TOP PAGE: CONTACT SECTION
+========================================================================== */
+#top-page #contact {
+    display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
+    height: auto !important; min-height: 100vh; padding: 100px 5%; background: #000;
+}
+#top-page #contact .tech-info { text-align: center !important; width: 100% !important; margin-bottom: 50px !important; flex: none !important; }
+
+/* ==========================================================================
+   [7] GLOBAL FOOTER (全ページ共通)
+========================================================================== */
+#global-footer-section.global-footer {
+    display: block !important; height: auto !important; min-height: 0 !important;
+    padding: 60px 5% 30px !important; background: #050505; border-top: 1px solid rgba(155, 155, 255, 0.1); position: relative; z-index: 10;
+}
+#global-footer-section .footer-content { display: flex !important; justify-content: space-between; align-items: flex-start; max-width: 1200px; margin: 0 auto 60px; gap: 40px; flex-wrap: wrap;}
+.footer-logo h2 { font-size: 2rem; letter-spacing: 0.2em; margin-bottom: 10px; font-weight: 300; background: linear-gradient(135deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.footer-logo p { color: #888; font-size: 0.9rem; letter-spacing: 0.1em; }
+.footer-links { display: flex; flex-direction: column; gap: 15px; }
+.footer-links a { color: #ccc; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; transition: 0.3s; }
+.footer-links a:hover { color: #fff; }
+.footer-contact-info { display: flex; flex-direction: column; gap: 15px; align-items: flex-start; }
+.footer-contact-info p { color: #888; font-size: 0.8rem; letter-spacing: 0.2em; }
+.mail-btn { display: inline-block; padding: 12px 30px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px; color: #fff; text-decoration: none; letter-spacing: 0.1em; transition: 0.3s; }
+.mail-btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+.footer-bottom { width: 100%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; }
+.footer-bottom p { color: #555; font-size: 0.75rem; letter-spacing: 0.1em; }
+@media (max-width: 768px) { #global-footer-section .footer-content { flex-direction: column; text-align: center; align-items: center; } .footer-contact-info { align-items: center; } }
+
+/* ==========================================================================
+   [8] KEYFRAMES (アニメーション定義)
+========================================================================== */
+@keyframes soundBounce { 0% { height: 3px; } 100% { height: 12px; } }
+@keyframes heroShine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+@keyframes heroGlow { 0% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); } 100% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 5px rgba(161, 196, 253, 0.4)); } }
+@keyframes heroReveal { 0% { opacity: 0; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0)) blur(42px); transform: scale(1.3); } 100% { opacity: 1; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4)) blur(0px); transform: scale(1); } }
+@keyframes simpleFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ★Environment用 重厚なシネマティック登場 */
+@keyframes cinematicReveal {
+    0% { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+    100% { opacity: 1; filter: blur(0px); transform: translateY(0); }
 }
 
-/* ボタンの基本デザイン */
-.morph-btn {
-    position: relative;
-    min-width: 110px; /* 横幅を確保 */
-    padding: 12px 20px;
-    font-size: 0.9rem; /* 文字を大きく */
-    font-family: 'Orbitron', monospace; /* あればテック系フォント */
-    font-weight: bold;
-    letter-spacing: 0.1em;
-    color: #888;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 4px; /* 少し角を丸める */
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-    overflow: hidden;
-}
-
-/* ホバー（マウスを乗せた時） */
-.morph-btn:hover {
-    color: #fff;
-    background: #222;
-    border-color: #555;
-    transform: translateY(-2px); /* 少し浮き上がる */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-}
-
-/* アクティブ（選択中）の状態：発光演出 */
-.morph-btn.is-active {
-    color: #000;
-    background: #fff;
-    border-color: #fff;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-/* 装飾用の小さな角デザイン（擬似要素） */
-.morph-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 4px;
-    border-top: 1px solid rgba(255,255,255,0.5);
-    border-left: 1px solid rgba(255,255,255,0.5);
-}
-
-/* スマホ対応：画面が狭いときはボタンを2列にする */
-@media (max-width: 600px) {
-    .morph-btn {
-        flex: 1 1 40%; /* 2カラム */
-        font-size: 0.8rem;
-        padding: 10px;
-    }
-}
-
-/* --- Character Page 専用セクション・デザイン --- */
-
-/* Spec Panels (Topology) */
-.spec-flex-container {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.chara-spec-panel {
-    flex: 1;
-    min-width: 320px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-top: 2px solid #fff; /* 上部にアクセントライン */
-    position: relative;
-    transition: 0.3s;
-}
-
-.chara-spec-panel:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.spec-header {
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: #fff;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.spec-description {
-    font-size: 0.85rem;
-    color: #888;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
-
-.spec-list {
-    list-style: none;
-    padding: 0;
-}
-
-.spec-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.75rem;
-}
-
-.spec-label { color: #555; font-family: monospace; }
-.spec-value { color: #fff; font-weight: bold; }
-
-/* NPR & 2D Works Grid */
-.works-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-
-.work-item {
-    position: relative;
-    overflow: hidden;
-    background: #111;
-    aspect-ratio: 16/9;
-}
-
-.work-media {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.work-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.5s;
-}
-
-.work-overlay {
-    position: absolute;
-    bottom: 0; left: 0; width: 100%;
-    padding: 30px;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.4s;
-}
-
-.work-item:hover .work-overlay {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.work-item:hover .work-media img {
-    transform: scale(1.05);
-    filter: brightness(0.5);
-}
-
-.work-type {
-    font-size: 0.6rem;
-    color: #ff3333;
-    letter-spacing: 0.2em;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.work-overlay h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
-.work-overlay p { margin: 0; font-size: 0.8rem; color: #aaa; line-height: 1.5; }
-
-/* スマホ対応 */
-@media (max-width: 768px) {
-    .works-grid { grid-template-columns: 1fr; }
+/* ==========================================================================
+   レスポンシブ (全体)
+========================================================================== */
+@media (max-width: 1024px) {
+    .works-split-container { flex-direction: column !important; gap: 40px; text-align: center; }
+    .timeline-nav { display: none; }
+    #showcase-env .works-visual { perspective: none; }
+    .env-visual-frame { transform: none !important; margin: 0 5%; }
 }

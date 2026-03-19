@@ -1,334 +1,208 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="ja">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aknfox | Template</title>
-	<link rel="icon" href="favicon.png" type="image/png">
+    <title>Aknfox | 3D Generalist Portfolio</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="top-page">
 
     <nav class="pill-nav">
         <a href="index.html" class="is-current-page">TOP</a>
         <a href="environment.html">ENV</a>
-        <a href="character.html">CHARA</a> <a href="vfx_anim.html">VFX & ANIM</a> <a href="game.html">GAME</a>
-        <a href="props.html">PROPS</a>
+        <a href="character.html">CHARA</a>
+        <a href="#" class="coming-soon">VFX & ANIM</a>
+        <a href="#" class="coming-soon">GAME</a>
+        <a href="#" class="coming-soon">PROPS</a>
     </nav>
 
     <nav class="timeline-nav">
-        <a href="#hero" class="nav-item"><span>TOP</span></a>
-        <a href="#showcase-env" class="nav-item"><span>ENVIRONMENT</span></a>
-        <a href="#showcase-character" class="nav-item"><span>CHARACTER</span></a> <a href="#showcase-vfx-anim" class="nav-item"><span>VFX & ANIMATION</span></a> <a href="#showcase-game" class="nav-item"><span>GAME DEV</span></a>
-        <a href="#showcase-props" class="nav-item"><span>PROPS</span></a>
-        <a href="#contact" class="nav-item"><span>CONTACT</span></a>
+        <a href="#hero" class="nav-item is-active"><span>01_TOP</span></a>
+        <a href="#showcase-env" class="nav-item"><span>02_ENVIRONMENT</span></a>
+        <a href="#showcase-character" class="nav-item"><span>03_CHARACTER</span></a>
+        <a href="#showcase-vfx-anim" class="nav-item"><span>04_VFX_ANIM</span></a>
+        <a href="#showcase-game" class="nav-item"><span>05_GAME_DEV</span></a>
+        <a href="#showcase-props" class="nav-item"><span>06_PROPS</span></a>
+        <a href="#contact" class="nav-item"><span>07_CONTACT</span></a>
     </nav>
-	
-	
+
     <section id="hero">
-        <video id="hero-video" class="bg-media" src="1.mp4" autoplay muted loop playsinline></video>
-        <div class="content-box">
-            <h1 class="section-title">AKNFOX</h1>
-            <p class="section-desc">3D Generalist / World Builder</p>
+        <video class="bg-media" src="assets/high/1.mp4" autoplay muted loop playsinline></video>
+        <div class="hero-content">
+            <span class="category-tag">2026 REEL</span>
+            <h1>AKNFOX</h1>
+            <p>3D Generalist / World Builder</p>
         </div>
     </section>
-
-    <section id="showcase-env" class="content-block scroll-reveal">
-        <video class="bg-media" src="Animation5_1.mp4" autoplay muted loop playsinline></video>
+    
+    <section id="showcase-env">
+        <video class="env-bg-video" src="assets/high/Animation5_1.mp4" autoplay muted loop playsinline></video>
         
-        <div class="drawing-corner top-left"></div>
-        <div class="drawing-corner bottom-right"></div>
-
         <div class="works-split-container">
-            <div class="split-left">
-                <div class="single-image-box auto-slideshow">
-					<img src="ENV1.jpg" alt="ENV Main 1" class="is-active">
-					<img src="ENV2.jpg" alt="ENV Main 2">
-					<img src="ENV3.png" alt="ENV Main 3">
-					<img src="ENV4.jpg" alt="ENV Main 4">
-				</div>
-            </div>
-
-            <div class="split-right">
-                <div class="tech-info reveal-text-wrap">
-                    <div class="reveal-line"></div>
-                    <div class="reveal-content">
-                        <span class="category-tag">01. Environment</span>
-                        <h3>High-End Architecture</h3>
-                        <p>静謐な空気感を持つ建築パースから、没入感のあるウォークスルー映像まで。</p>
-                        <a href="environment.html" class="view-more-btn">VIEW ALL ENV WORKS ➔</a>
+            <div class="works-visual">
+                <div class="env-visual-frame">
+                    <div class="env-media-container">
+                        <video src="assets/high/env_main_showcase.mp4" autoplay muted loop playsinline></video>
+                        <div class="camera-ui">[ VIEW: PERS_01 // SCALE: NTS ]</div>
                     </div>
+                    <div class="dimension-line dim-v"></div>
+                    <div class="dimension-line dim-h"></div>
                 </div>
+            </div>
+
+            <div class="works-info">
+                <span class="category-tag">ARCHITECTURAL VISUALIZATION</span>
+                <h2 class="section-title">High-End<br>Environment</h2>
+                <p class="section-desc">
+                    Unreal Engine 5による、フォトリアルな建築パース・環境制作。<br>
+                    Lumenによる正確なグローバル・イルミネーションと、Naniteを用いた高密度なディテールを追求し、
+                    設計者の意図した「空間の質」をレンダリングします。
+                </p>
+                <div class="tech-stack">
+                    <span>UE5</span>
+                    <span>BLENDER</span>
+                    <span>SUBSTANCE</span>
+                </div>
+                <a href="environment.html" class="detail-link">EXPLORE PROJECTS</a>
             </div>
         </div>
     </section>
 
-    <section id="showcase-character" class="content-block scroll-reveal">
-        <video class="bg-media" src="chara_demo.mp4" autoplay muted loop playsinline></video>
-        
+    <section id="showcase-character" class="scroll-reveal">
+        <video class="bg-media" src="assets/high/chara_demo.mp4" autoplay muted loop playsinline></video>
         <div class="works-split-container">
             <div class="split-right">
-                <div class="tech-info chara-reveal-text">
-                    <span class="category-tag category-tag-chara">Anatomy & Design</span>
-                    <h3>3D Character</h3>
-                    <p>人体構造への深い理解と、魅力的なキャラクターモデリング。リギングを前提とした美しいトポロジーと、SFやメカニカルな装甲デザインまで幅広く対応します。</p>
-                    <a href="character.html" class="view-more-btn">VIEW CHARACTERS ➔</a>
-                </div>
+                <span class="category-tag">Modeling & Rig</span>
+                <h3 class="section-title">3D Character</h3>
+                <p class="section-desc">人体構造の理解に基づいたモデリングと、表情豊かなリギング。</p>
+                <a href="character.html" class="view-more-btn">VIEW CHARACTERS ➔</a>
             </div>
             <div class="split-left">
-                <div class="single-image-box">
-                    <div class="char-corner cc-tl"></div>
-                    <div class="char-corner cc-tr"></div>
-                    <div class="char-corner cc-bl"></div>
-                    <div class="char-corner cc-br"></div>
-                    <img src="chara_main.png" alt="Character Modeling">
-                </div>
+                <div class="single-image-box"><img src="chara_main.png" alt="Character"></div>
             </div>
         </div>
     </section>
 
-    <section id="showcase-vfx-anim" class="content-block scroll-reveal">
+    <section id="showcase-vfx-anim" class="scroll-reveal">
         <video class="bg-media" src="composite.webm" autoplay muted loop playsinline></video>
-        
-        <div class="viewfinder-corner vf-tl"></div>
-        <div class="viewfinder-corner vf-tr"></div>
-        <div class="viewfinder-corner vf-bl"></div>
-        <div class="viewfinder-corner vf-br"></div>
-        <div class="center-cross"></div>
-        <div class="timecode-display">TC [ 01:00:24:15 ]</div>
-
         <div class="works-split-container">
             <div class="split-left">
-                <div class="single-image-box">
-                    <img src="vfx_main.png" alt="VFX and Animation">
-                </div>
+                <div class="single-image-box"><img src="vfx_main.png" alt="VFX"></div>
             </div>
             <div class="split-right">
-                <div class="tech-info vfx-reveal-text">
-                    <span class="category-tag category-tag-vfx">Motion & Compositing</span>
-                    <h3>VFX & Animation</h3>
-                    <p>生命感のあるキャラクターアニメーションから、実写と3Dを融解させるコンポジットワークまで。動きと視覚効果を統合し、シネマティックな映像を構築します。</p>
-                    <a href="vfx_anim.html" class="view-more-btn">PLAY REEL ➔</a>
-                </div>
+                <span class="category-tag tag-soon">Motion</span>
+                <h3 class="section-title">VFX & Animation</h3>
+                <p class="section-desc">シネマティックな映像表現と、キャラクターに命を吹き込む動き。</p>
+                <a href="#" class="view-more-btn coming-soon">UNDER CONSTRUCTION</a>
             </div>
         </div>
     </section>
 
-    <section id="showcase-game" class="content-block scroll-reveal">
+    <section id="showcase-game" class="scroll-reveal">
         <video class="bg-media" src="game_demo.mp4" autoplay muted loop playsinline></video>
-        
-        <div class="hud-status-bar"></div>
-
         <div class="works-split-container">
             <div class="split-right">
-                <div class="tech-info game-reveal-text">
-                    <span class="category-tag category-tag-game">SYS_INIT: Game Dev</span>
-                    <h3>Interactive & System</h3>
-                    <p>Unreal Engineを用いたゲーム開発とインタラクティブ制御。ビジュアルの美しさだけでなく、ロジックとシステム設計から体験を構築します。</p>
-                    <a href="game.html" class="view-more-btn">ACCESS SYSTEM ➔</a>
-                </div>
+                <span class="category-tag tag-soon">Interactive</span>
+                <h3 class="section-title">Interactive System</h3>
+                <p class="section-desc">UE5を用いたロジック設計と、没入感のある体験構築。</p>
+                <a href="#" class="view-more-btn coming-soon">ACCESS DENIED</a>
             </div>
-
             <div class="split-left">
-                <div class="single-image-box">
-                    <img src="A.png" alt="Game Development">
-                </div>
+                <div class="single-image-box"><img src="A.png" alt="Game"></div>
             </div>
         </div>
     </section>
 
-    <section id="showcase-props" class="content-block scroll-reveal">
+    <section id="showcase-props" class="scroll-reveal">
         <video class="bg-media" src="props_demo.mp4" autoplay muted loop playsinline></video>
-
         <div class="works-split-container">
             <div class="split-left">
-                <div class="single-image-box">
-                    <img src="Sample1.jpg" alt="Props and Hard Surface">
-                </div>
+                <div class="single-image-box"><img src="Sample1.jpg" alt="Props"></div>
             </div>
-            
             <div class="split-right">
-                <div class="tech-info props-reveal-text">
-                    <span class="category-tag category-tag-props">Asset & Hard Surface</span>
-                    <h3>Props & Hard Surface</h3>
-                    <p>緻密なトポロジーと質感表現。ミリタリーハードウェアから日常のプロップまで、世界観の解像度を引き上げる高品質な3Dアセットを制作します。</p>
-                    <a href="props.html" class="view-more-btn">VIEW ASSETS ➔</a>
-                </div>
+                <span class="category-tag tag-soon">Assets</span>
+                <h3 class="section-title">Hard Surface</h3>
+                <p class="section-desc">世界観の解像度を引き上げる、高品質な3Dアセット制作。</p>
+                <a href="#" class="view-more-btn coming-soon">PREPARING...</a>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="content-block" style="background: #000;">
-        <div class="works-split-container" style="justify-content: center; flex-direction: column; text-align: center;">
-            <div class="tech-info">
-                <span class="category-tag">Get in Touch</span>
-                <h2 class="section-title">CONTACT</h2>
-                <p>プロジェクトのご依頼やご相談、作品に関するお問い合わせはこちらから。</p>
+    <section id="contact" class="scroll-reveal">
+        <div class="tech-info">
+            <span class="category-tag">Get in Touch</span>
+            <h2 class="section-title">CONTACT</h2>
+        </div>
+        <div style="width: 100%; max-width: 800px; margin: 0 auto;">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfBzYKNTDZu-GB29BNS1w9mReioDlOJLt__ZR_KxLa12RaoSA/viewform?embedded=true" width="100%" height="600" frameborder="0" style="border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">読み込み中…</iframe>
+        </div>
+    </section>
+    
+    <section id="global-footer-section" class="global-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>AKNFOX</h2>
+                <p>3D Generalist / World Builder</p>
             </div>
-            
-            <div style="width: 100%; max-width: 800px; margin-top: 50px;">
-                <iframe 
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSfBzYKNTDZu-GB29BNS1w9mReioDlOJLt__ZR_KxLa12RaoSA/viewform?embedded=true" 
-                    width="100%" 
-                    height="800" 
-                    frameborder="0" 
-                    marginheight="0" 
-                    marginwidth="0"
-                    style="border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-                    読み込み中…
-                </iframe>
+            <div class="footer-links">
+                <a href="https://www.youtube.com/@aknfox" target="_blank" rel="noopener">YouTube</a>
+                <a href="#" target="_blank" rel="noopener">X (Twitter)</a>
+                <a href="#" target="_blank" rel="noopener">ArtStation</a>
+                <a href="#" target="_blank" rel="noopener">GitHub</a>
             </div>
+            <div class="footer-contact-info">
+                <p>BUSINESS INQUIRIES</p>
+                <a href="#contact" class="mail-btn">CONTACT FORM ➔</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AKNFOX. All rights reserved.</p>
         </div>
     </section>
 
     <audio id="bgm-audio" src="Crimson_Overture.mp3" loop preload="auto"></audio>
-
     <button id="bgm-control" class="bgm-btn">
-        <div class="bgm-bars">
-            <span class="bgm-bar"></span>
-            <span class="bgm-bar"></span>
-            <span class="bgm-bar"></span>
-        </div>
+        <div class="bgm-bars"><span class="bgm-bar"></span><span class="bgm-bar"></span><span class="bgm-bar"></span></div>
         <span class="bgm-text">SOUND OFF</span>
     </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ==========================================
-            // [追加] 自動スライドショーの処理
-            // ==========================================
-            const slideshows = document.querySelectorAll('.auto-slideshow');
-            
-            slideshows.forEach(slideshow => {
-                const images = slideshow.querySelectorAll('img');
-                let currentIndex = 0;
-                
-                // 画像が2枚以上ある場合だけスライドショーを実行
-                if (images.length > 1) {
-                    setInterval(() => {
-                        // 現在の画像をフワッと消す
-                        images[currentIndex].classList.remove('is-active');
-                        
-                        // 次の画像の番号を計算（最後まで行ったら0に戻る）
-                        currentIndex = (currentIndex + 1) % images.length;
-                        
-                        // 次の画像をフワッと出す
-                        images[currentIndex].classList.add('is-active');
-                        
-                    }, 4000); // ★ 4000 = 4秒ごとに画像を切り替える
-                }
-            });
-			// ==========================================
-            // [追加] トップ動画（HERO）の音量コントロール
-            // ==========================================
-            const heroVideo = document.getElementById('hero-video');
-            if (heroVideo) {
-                // 音量を10%（0.1）に設定
-                heroVideo.volume = 0.5;
-
-                // 音声付きで自動再生を試みる
-                const playPromise = heroVideo.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        // ブラウザの仕様で「音声付き自動再生」がブロックされた場合、
-                        // 映像が止まってしまわないようにミュートにして再生を再開する
-                        console.log("ブラウザ制限により、トップ動画をミュートで再生します。");
-                        heroVideo.muted = true;
-                        heroVideo.play();
-                    });
-                }
+            // 音量制御
+            const bgm = document.getElementById('bgm-audio');
+            const bgmBtn = document.getElementById('bgm-control');
+            if (bgm && bgmBtn) {
+                bgm.volume = 0.15;
+                bgmBtn.addEventListener('click', () => {
+                    if (bgm.paused) {
+                        bgm.play();
+                        bgmBtn.classList.add('is-playing');
+                        bgmBtn.querySelector('.bgm-text').textContent = 'SOUND ON';
+                    } else {
+                        bgm.pause();
+                        bgmBtn.classList.remove('is-playing');
+                        bgmBtn.querySelector('.bgm-text').textContent = 'SOUND OFF';
+                    }
+                });
             }
-            
-            // --- 1. スクロールアニメーションの処理 ---
-			
-            // --- 1. スクロールアニメーションの処理 ---
+
+            // スクロール監視 (表示アニメーション & ナビゲーション連動)
             const navItems = document.querySelectorAll('.nav-item');
             const sections = document.querySelectorAll('section[id]');
-
-            const options = {
-                root: null,
-                rootMargin: '-70% 0px', 
-                threshold: 0
-            };
-
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible'); 
-                        
-                        navItems.forEach(item => item.classList.remove('is-active'));
-                        const id = entry.target.getAttribute('id');
-                        const activeLink = document.querySelector(`.nav-item[href="#${id}"]`);
-                        if (activeLink) {
-                            activeLink.classList.add('is-active');
-                        }
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('is-visible');
+                        const id = e.target.getAttribute('id');
+                        navItems.forEach(item => {
+                            item.classList.toggle('is-active', item.getAttribute('href') === `#${id}`);
+                        });
                     }
                 });
-            }, options);
-
-            sections.forEach(section => observer.observe(section));
-
-            // --- 2. BGMコントロールの処理 ---
-            const bgmAudio = document.getElementById('bgm-audio');
-            const bgmBtn = document.getElementById('bgm-control');
-
-            if (bgmAudio && bgmBtn) {
-                const bgmText = bgmBtn.querySelector('.bgm-text');
-
-                // デフォルト音量
-                bgmAudio.volume = 0.1; 
-
-                // 再生・停止の切り替え関数
-                const toggleBGM = (forcePlay) => {
-                    const heroVideo = document.getElementById('hero-video'); // ★トップ動画を取得
-                    
-                    if (forcePlay) {
-                        // ① BGMの再生
-                        bgmAudio.play().catch(e => console.log("再生エラー:", e));
-                        bgmBtn.classList.add('is-playing');
-                        bgmText.textContent = 'SOUND ON';
-                        
-                        // ② ★トップ動画のミュートを解除し、音量を10%にする
-                        if (heroVideo) {
-                            heroVideo.muted = false;
-                            heroVideo.volume = 0.05;
-                        }
-                    } else {
-                        // ① BGMの停止
-                        bgmAudio.pause();
-                        bgmBtn.classList.remove('is-playing');
-                        bgmText.textContent = 'SOUND OFF';
-                        
-                        // ② ★トップ動画を再び無音（ミュート）に戻す
-                        if (heroVideo) {
-                            heroVideo.muted = true;
-                        }
-                    }
-                };
-
-                // 手動クリックでのON/OFF
-                bgmBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (bgmAudio.paused) {
-                        toggleBGM(true);
-                    } else {
-                        toggleBGM(false);
-                    }
-                });
-
-                // ★ 自動再生（後で有効にする時は、以下の /* 〜 */ を消してください）
-                /*
-                const playPromise = bgmAudio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        bgmBtn.classList.add('is-playing');
-                        bgmText.textContent = 'SOUND ON';
-                    }).catch(error => {
-                        bgmBtn.classList.remove('is-playing');
-                        bgmText.textContent = 'SOUND OFF';
-                    });
-                }
-                */
-            }
+            }, { rootMargin: '-30% 0px' });
+            sections.forEach(s => observer.observe(s));
         });
     </script>
 </body>
