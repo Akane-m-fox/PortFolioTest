@@ -501,7 +501,7 @@
     object-fit: cover;
     /* 勝手に再生されないように再生をコントロール */
     pointer-events: none;
-}@charset "UTF-8";
+}
 
 /* ==========================================
    0. Layout Fix (中央揃え徹底)

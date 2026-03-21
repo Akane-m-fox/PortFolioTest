@@ -3,36 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aknfox | Environment</title>
+    <title>High-End Environment | Aknfox</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="env.css">
 </head>
-<body style="background: #050505; color: #fff; overflow-y: auto;">
+<body id="env-detail-page">
 
     <nav class="pill-nav">
         <a href="index.html">TOP</a>
-        <a href="environment.html">ENV</a>
+        <a href="environment.html" class="is-current-page">ENV</a>
         <a href="character.html">CHARA</a>
-        <a href="vfx_anim.html">VFX & ANIM</a>
-        <a href="game.html">GAME</a>
-        <a href="props.html">PROPS</a>
+        <a href="#" class="coming-soon">VFX & ANIM</a>
+        <a href="#" class="coming-soon">GAME</a>
+        <a href="#" class="coming-soon">PROPS</a>
     </nav>
 
-    <div style="padding: 180px 5% 60px; text-align: center;">
-        <span class="category-tag">01. Environment</span>
-        <h1 class="section-title" style="font-size: clamp(2rem, 5vw, 4rem); margin-top: 15px; letter-spacing: 0.2em;">
-            High-End Architecture
-        </h1>
+    <nav class="timeline-nav">
+        <a href="#hero" class="nav-item is-active"><span>00_TOP</span></a>
+        <a href="#project-atrium" class="nav-item"><span>01_ATRIUM</span></a>
+        <a href="#project-cafe" class="nav-item"><span>02_CAFE_BAR</span></a>
+        <a href="#footer-anchor" class="nav-item"><span>03_INFO</span></a>
+    </nav>
+
+    <header id="hero" class="subpage-hero">
+        <video src="assets/high/env_main_showcase.mp4" autoplay muted loop playsinline class="bg-media"></video>
+        <div class="header-content-centered">
+            <span class="category-tag">ARCHITECTURAL VISUALIZATION</span>
+            <h1 class="section-title">ENVIRONMENT</h1>
+        </div>
+    </header>
+
+    <section id="project-atrium" class="project-chapter">
+    <div class="subpage-hero">
+        <video src="assets/high/env_bg_wireframe.mp4" autoplay muted loop playsinline class="bg-media"></video>
+        <div class="header-content-centered">
+            <span class="category-tag">CASE STUDY 01</span>
+            <h2 class="section-title">PUBLIC ATRIUM</h2>
+        </div>
     </div>
 
-    <div style="text-align: center; padding-bottom: 150px;">
-        <div style="max-width: 1200px; margin: 0 auto; width: 90%;">
-            <img src="ENV1.jpg" alt="Main Work" style="width: 100%; display: block; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);">
+    <div class="project-content container">
+        <div class="scan-container scroll-reveal">
+            <div class="wireframe-layer">
+                <img src="assets/high/env_wire_atrium.jpg" alt="Wireframe">
+            </div>
+            <div class="final-layer">
+                <img src="assets/high/ENV6.jpg" alt="Final Render">
+            </div>
+            <div class="scan-line"></div>
         </div>
-        
-        <div style="margin-top: 80px;">
-            <a href="index.html" class="view-more-btn">➔ RETURN TO SYSTEM (TOP)</a>
+
+        <div class="tech-spec-row">
+            <div class="spec-box left scroll-reveal">
+                <span class="label">STRUCTURE</span>
+                <h4>Timber Truss Hybrid</h4>
+                <p>3,400個の個別ポリゴンで構成されたトラス構造。UE5のNaniteを活用した高密度モデリング。</p>
+            </div>
+            <div class="spec-box right scroll-reveal">
+                <span class="label">LIGHTING</span>
+                <h4>Lumen Dynamic GI</h4>
+                <p>リアルタイムでの光のバウンスを計算。時間経過による光の変化をシミュレート可能。</p>
+            </div>
         </div>
     </div>
+</section>
 
+    <section id="project-cafe" class="project-chapter">
+        <div class="subpage-hero chapter-hero">
+            <video src="assets/high/env_bg_wireframe2.mp4" autoplay muted loop playsinline class="bg-media"></video>
+            <div class="header-content-centered">
+                <span class="category-tag">CASE STUDY 02</span>
+                <h2 class="section-title">CAFE & BAR</h2>
+            </div>
+        </div>
+
+        <div class="day-night-split-block scroll-reveal">
+            <div class="split-panel panel-day">
+                <img src="assets/high/ENV4.jpg" alt="Day">
+                <div class="panel-content theme-day">
+                    <span class="time-tag">DAYLIGHT</span>
+                    <h3>Natural Diffusion</h3>
+                    <p>柔らかな自然光のシミュレーション。マテリアルの質感が最も映える時間帯。</p>
+                </div>
+            </div>
+            <div class="split-panel panel-night">
+                <img src="assets/high/ENV3.jpg" alt="Night">
+                <div class="panel-content theme-night">
+                    <span class="time-tag">NIGHT MODE</span>
+                    <h3>IES Illumination</h3>
+                    <p>IESライトによる緻密な照明設計。夜間特有の空気感と反射を強調。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-anchor"></div>
+    <section id="global-footer-section" class="global-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>AKNFOX</h2>
+                <p>3D Generalist / World Builder</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.youtube.com/@aknfox" target="_blank">YouTube</a>
+                <a href="#">X (Twitter)</a>
+                <a href="#">ArtStation</a>
+            </div>
+            <div class="footer-contact-info">
+                <p>BUSINESS INQUIRIES</p>
+                <a href="index.html#contact" class="mail-btn">CONTACT FORM ➔</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // --- 1. すべてのbg-mediaのフェードイン処理 ---
+                const allMedia = document.querySelectorAll('.bg-media');
+                
+                allMedia.forEach(media => {
+                    const showMedia = () => {
+                        // クラスを付与してCSSのtransitionを発動
+                        media.classList.add('is-loaded');
+                    };
+
+                    if (media.tagName === 'VIDEO') {
+                        // 動画の準備ができたら表示
+                        media.addEventListener('canplaythrough', showMedia);
+                        // すでに読み込み済みの場合の対応
+                        if (media.readyState >= 3) showMedia();
+                    } else {
+                        // 画像の場合
+                        media.addEventListener('load', showMedia);
+                        if (media.complete) showMedia();
+                    }
+
+                    // 万が一読み込みが止まっても、3秒後には強制的にフェード開始
+                    setTimeout(showMedia, 3000);
+                });
+
+                // --- 2. タイムラインナビの連動 ---
+                const navItems = document.querySelectorAll('.nav-item');
+                const sections = document.querySelectorAll('section[id], header[id]');
+                const navObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            const id = e.target.getAttribute('id');
+                            if (id) {
+                                navItems.forEach(item => {
+                                    const href = item.getAttribute('href').replace('#', '');
+                                    item.classList.toggle('is-active', href === id);
+                                });
+                            }
+                        }
+                    });
+                }, { rootMargin: '-30% 0px' });
+                sections.forEach(s => navObserver.observe(s));
+
+                // --- 3. スクロールアニメーションの発火 ---
+                const revealElements = document.querySelectorAll('.scroll-reveal, .fade-up-target');
+                const animObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('is-visible');
+                        }
+                    });
+                }, { rootMargin: '-10% 0px' });
+                revealElements.forEach(el => animObserver.observe(el));
+            });
+</script>
 </body>
 </html>

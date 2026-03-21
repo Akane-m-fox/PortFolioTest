@@ -125,6 +125,50 @@ section {
 #hero .hero-content p { font-size: 1.1rem; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.4); margin-top: 30px; opacity: 0; animation: simpleFadeIn 2s ease-out 2.5s forwards; }
 
 /* ==========================================================================
+   COMMON SUBPAGE HERO (ENV, CHARA, 今後の全サブページ共通)
+========================================================================== */
+.subpage-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #000;
+}
+
+
+@keyframes cinematicZoom {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.10); }
+}
+
+/* 中央揃えのテキストブロック */
+.header-content-centered {
+    position: relative; z-index: 2; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    
+    /* 下からフワッと現れる登場アニメーション */
+    opacity: 0; transform: translateY(30px); filter: blur(10px);
+    animation: heroCenterReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+@keyframes heroCenterReveal {
+    to { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+
+.header-content-centered .category-tag {
+    font-family: monospace; font-size: 0.85rem; letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 20px; margin-bottom: 25px; display: inline-block;
+}
+
+.header-content-centered .section-title {
+    font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 200; letter-spacing: 0.25em;
+    margin: 0; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+/* ==========================================================================
    [4] TOP PAGE: ENVIRONMENT SECTION (High-End Architectural Edit)
 ========================================================================== */
 #showcase-env {
@@ -265,3 +309,4 @@ section {
     #showcase-env .works-visual { perspective: none; }
     .env-visual-frame { transform: none !important; margin: 0 5%; }
 }
+
